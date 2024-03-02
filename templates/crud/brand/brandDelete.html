@@ -1,7 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1 class="text-center">
-brandDelete
-    </h1>
+<h1 class="text-center">
+    ลบข้อมูลยี่ห้อรถ
+</h1>
+<form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="text-center">
+        <button type="button" class="btn btn-secondary" onclick="history.back()">
+            <i class="fa fa-rotate-back"></i> Back
+        </button>
+        {% if brand.getCountCar == 0 %}
+        <button type="submit" class="btn btn-danger" onclick="return confirm('โปรดยืนยันการลบประเภทสินค้านี้' )">
+            <i class="fa fa-trash"></i> Delete
+        </button>
+        {% else %}
+        <button class="btn btn-lg btn-danger disabled">
+            ประเภทนี้มีบางรายการปรากฎอยู่ในระบบแล้ว ไม่สามารถลบได้
+        </button>
+        {% endif %}
+    </p>
+</form>
 {% endblock %}
