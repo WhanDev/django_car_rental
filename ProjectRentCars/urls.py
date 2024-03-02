@@ -21,7 +21,9 @@ from AppProject import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='homebase'),
-    path('login/', views.login, name='login'),
+
+    path('login/', views.user_login, name='login'),
+    path('register/', views.register, name='register'),
     
     path('brand/new', views.brandNew, name='brandNew'),
     path('brand/', views.brandList, name='brandList'),

@@ -1,7 +1,6 @@
 from django.db import models
 from django.db.models import Count
 
-
 class CarBarnd(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default="")
@@ -15,11 +14,9 @@ class CarBarnd(models.Model):
 
 
 Model_CHOICES = [
-    ('รถยนต์', 'รถยนต์'),
-    ('มอเตอร์ไซค์', 'มอเตอร์ไซค์'),
-]
-
-
+        ('car', 'รถยนต์'),
+        ('motorcycle', 'มอเตอร์ไซค์'),
+    ]
 class Car(models.Model):
     car_id = models.CharField(max_length=5, primary_key=True, default="")
     brand = models.ForeignKey(CarBarnd, on_delete=models.CASCADE, default=None)
@@ -50,11 +47,9 @@ class Customer(models.Model):
 
 
 ROLES = [
-    ('พนักงาน', 'พนักงาน'),
-    ('แอดมิน', 'แอดมิน'),
-]
-
-
+        ('employee', 'พนักงาน'),
+        ('admin', 'แอดมิน'),
+    ]
 class Employ(models.Model):
     em_id = models.CharField(max_length=13, primary_key=True, default="")
     email = models.CharField(max_length=100, default="")
