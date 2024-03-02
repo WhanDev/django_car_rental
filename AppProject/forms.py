@@ -52,6 +52,7 @@ class CarForm(forms.ModelForm):
         self.fields['price'].widget.attrs['readonly'] = True
         self.fields['rental_rate'].widget.attrs['readonly'] = True
         self.fields['picture'].widget.attrs['readonly'] = True
+
 class EmployForm(forms.ModelForm):
     ROLES = [
         ('employee', 'พนักงาน'),
@@ -76,4 +77,3 @@ class EmployForm(forms.ModelForm):
             'address': 'ที่อยู่',
             'role': 'สิทธิผู้ใช้งาน',
         }
-

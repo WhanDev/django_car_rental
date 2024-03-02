@@ -22,7 +22,6 @@ def home(request):
 def login(request):
     return render(request, 'authention/login.html')
 
-
 def brandNew(request):
     if request.method == 'POST':
         form = CarBrandForm(request.POST)
@@ -100,31 +99,6 @@ def user_login(request):
 def register(request):
     return render(request, 'authention/register.html')
 
-
-@login_required(login_url='login')
-def brandNew(request):
-    if not request.user.is_authenticated:
-        # ถ้าผู้ใช้ยังไม่ได้เข้าสู่ระบบ ให้เปลี่ยนเส้นทางไปยังหน้า 'userAuthen'
-        return redirect('login')
-    return render(request, 'crud/brand/brandNew.html')
-
-
-@login_required(login_url='login')
-def brandList(request):
-    if not request.user.is_authenticated:
-        # ถ้าผู้ใช้ยังไม่ได้เข้าสู่ระบบ ให้เปลี่ยนเส้นทางไปยังหน้า 'userAuthen'
-        return redirect('login')
-    return render(request, 'crud/brand/brandList.html')
-
-
-def brandUpdate(request, id):
-    return render(request, 'crud/brand/brandUpdate.html')
-
-
-def brandDelete(request, id):
-    return render(request, 'crud/brand/brandDelete.html')
-
-
 def carNew(request):
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
@@ -196,8 +170,6 @@ def carUpdate(request, car_id):
         context = {'form': form}
         return render(request, 'crud/car/carUpdate.html',context)
 
-
-
 def carDelete(request, car_id):
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
@@ -213,19 +185,6 @@ def carDelete(request, car_id):
         return render(request, 'crud/car/carDelete.html',context)
 
     return render(request, 'crud/car/carNew.html')
-
-
-def carList(request):
-    return render(request, 'crud/car/carList.html')
-
-
-def carUpdate(request, car_id):
-    return render(request, 'crud/car/carUpdate.html')
-
-
-def carDelete(request, car_id):
-    return render(request, 'crud/car/carDelete.html')
-
 
 def customerNew(request):
     return render(request, 'crud/customer/customerNew.html')
@@ -245,7 +204,6 @@ def customerDelete(request, cus_id):
 
 def employeNew(request):
     return render(request, 'crud/employe/employeNew.html')
-
 
 def employeList(request):
     return render(request, 'crud/employe/employeList.html')
