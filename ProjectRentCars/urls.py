@@ -20,5 +20,6 @@ from AppProject import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='homebase')
+    path('', views.home, name='homebase'),
+    path('login/', views.login, name='login')
 ]

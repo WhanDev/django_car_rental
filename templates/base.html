@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="{% static 'stylesheets/bt502/css/bootstrap.css' %}">
+    <script src="{% static 'stylesheets/bt502/js/bootstrap.bundle.js'%}"></script>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-12 text-white" style="background-color: #253B59">
+                {% include 'layouts/header.html' %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-2" style="background-color: #F1F1E4">
+                <h1 style="font-size: 18px">
+                    MENU
+                </h1>
+                {% include 'layouts/navigationbars.html' %}
+            </div>
+            <div class="col col-10" style="background-color: #f4f4f4">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
