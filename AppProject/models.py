@@ -28,7 +28,7 @@ class Customer(models.Model):
     # password
     tell = models.CharField(max_length=10, default="")
     address = models.TextField(default="")
-    role = models.CharField(max_length=20,default="ลูกค้า")
+    role = models.CharField(max_length=20, default="ลูกค้า")
 
     def __str__(self):
         return str(self.cus_id) + ":" + self.name + "|" + self.email
