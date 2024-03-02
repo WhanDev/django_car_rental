@@ -21,5 +21,27 @@ from AppProject import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='homebase'),
-    path('login/', views.login, name='login')
+
+    path('login/', views.user_login, name='login'),
+    path('register/', views.register, name='register'),
+    
+    path('brand/new', views.brandNew, name='brandNew'),
+    path('brand/', views.brandList, name='brandList'),
+    path('brand/update<id>', views.brandUpdate, name='brandUpdate'),
+    path('brand/delete<id>', views.brandDelete, name='brandDelete'),
+    
+    path('car/new', views.carNew, name='carNew'),
+    path('car/', views.carList, name='carList'),
+    path('car/update<car_id>', views.carUpdate, name='carUpdate'),
+    path('car/delete<car_id>', views.carDelete, name='carDelete'),
+    
+    path('customer/new', views.customerNew, name='customerNew'),
+    path('customer/', views.customerList, name='customerList'),
+    path('customer/update<cus_id>', views.customerUpdate, name='customerUpdate'),
+    path('customer/delete<cus_id>', views.customerDelete, name='customerDelete'),
+    
+    path('employe/new', views.employeNew, name='employeNew'),
+    path('employe/', views.employeList, name='employeList'),
+    path('employe/update<em_id>', views.employeUpdate, name='employeUpdate'),
+    path('employe/delete<em_id>', views.employeDelete, name='employeDelete'),
 ]

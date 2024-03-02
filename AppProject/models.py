@@ -2,12 +2,13 @@ from django.db import models
 class CarBarnd(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default="")
+    desc = models.TextField(default="")
     def __str__(self):
         return str(self.id) + ":" + self.name
 
 Model_CHOICES = [
-        ('รถยนต์', 'รถยนต์'),
-        ('มอเตอร์ไซค์', 'มอเตอร์ไซค์'),
+        ('car', 'รถยนต์'),
+        ('motorcycle', 'มอเตอร์ไซค์'),
     ]
 class Car(models.Model):
     car_id = models.CharField(max_length=5, primary_key=True, default="")
@@ -33,8 +34,8 @@ class Customer(models.Model):
         return str(self.cus_id) + ":" + self.name + "|" + self.email
 
 ROLES = [
-        ('พนักงาน', 'พนักงาน'),
-        ('แอดมิน', 'แอดมิน'),
+        ('employee', 'พนักงาน'),
+        ('admin', 'แอดมิน'),
     ]
 class Employ(models.Model):
     em_id = models.CharField(max_length=13, primary_key=True, default="")
