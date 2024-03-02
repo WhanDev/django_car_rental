@@ -1,10 +1,17 @@
 from django.db import models
+from django.db.models import Count
+
 class CarBarnd(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default="")
-    desc = models.TextField(default="")
+
     def __str__(self):
         return str(self.id) + ":" + self.name
+
+    def getCountCar(self):
+        count = Car.objects.filter(brand=self).count()
+        return count
+
 
 Model_CHOICES = [
         ('car', 'รถยนต์'),
@@ -18,8 +25,13 @@ class Car(models.Model):
     price = models.FloatField(default=0.00)
     rental_rate = models.DecimalField(max_digits=5, decimal_places=2)
     picture = models.ImageField(upload_to='static/cars/', default="")
+
     def __str__(self):
         return str(self.car_id) + ":" + self.brand + "|" + self.model
+
+    def getCountOrder(self):
+        count = 0
+        return count
 
 class Customer(models.Model):
     cus_id = models.CharField(max_length=13, primary_key=True, default="")
@@ -33,6 +45,7 @@ class Customer(models.Model):
     def __str__(self):
         return str(self.cus_id) + ":" + self.name + "|" + self.email
 
+
 ROLES = [
         ('employee', 'พนักงาน'),
         ('admin', 'แอดมิน'),
@@ -44,10 +57,11 @@ class Employ(models.Model):
     # password
     tell = models.CharField(max_length=10, default="")
     address = models.TextField(default="")
-    role = models.CharField(max_length=20,choices=ROLES,default="")
+    role = models.CharField(max_length=20, choices=ROLES, default="")
 
     def __str__(self):
         return str(self.em_id) + ":" + self.name + "|" + self.email
+
 
 class Rental(models.Model):
     id = models.AutoField(primary_key=True)
@@ -56,6 +70,7 @@ class Rental(models.Model):
     ren_start = models.DateField()
     ran_end = models.DateField(null=True, blank=True)
     total = models.FloatField(default=0.00)
+
 
 class DailyReport(models.Model):
     date = models.DateField()
