@@ -40,3 +40,4 @@ class EmployForm(forms.ModelForm):
             'address': 'ที่อยู่',
             'role': 'สิทธิผู้ใช้งาน',
         }
+        
