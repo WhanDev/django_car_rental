@@ -73,7 +73,7 @@ def user_login(request):
         password = request.POST.get("password")
         user = authenticate(username=userName, password=password)
         if user is not None:
-            login(request, user)
+            # login(request, user)
             if user.is_staff == 0:
                 user = Customer.objects.get(name=userName)
                 request.session['userId'] = user.cus_id
@@ -95,6 +95,16 @@ def user_login(request):
         data = {'userName': ''}
         return render(request, 'authention/login.html', data)
 
+
+def user_logout(request):
+    if request.session.get('userId'):
+        del request.session["userId"]
+        del request.session["userName"]
+        del request.session["userStatus"]
+        logout(request)
+        return redirect('homebase')
+    else:
+        return redirect('login')
 
 def register(request):
     return render(request, 'authention/register.html')
@@ -131,6 +141,7 @@ def carNew(request):
         return render(request, 'crud/car/carNew.html', context)
 
 
+# @login_required(login_url='login')
 def carList(request):
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
@@ -205,8 +216,7 @@ def customerDelete(request, cus_id):
 def employeNew(request):
     return render(request, 'crud/employe/employeNew.html')
 
-def employeList(request):
-    return render(request, 'crud/employe/employeList.html')
+def employeNew(request):
     if request.method == 'POST':
         form = EmployForm(request.POST)
         if form.is_valid():
