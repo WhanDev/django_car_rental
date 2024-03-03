@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 import os
@@ -11,6 +12,7 @@ from django.contrib import messages
 def home(request):
     return render(request, 'homepage.html')
 
+@login_required(login_url='login')
 def brandNew(request):
     if request.method == 'POST':
         form = CarBrandForm(request.POST)
@@ -28,7 +30,7 @@ def brandList(request):
     context = {'brand': brand}
     return render(request, 'crud/brand/brandList.html', context)
 
-
+@login_required(login_url='login')
 def brandUpdate(request, id):
     brand = get_object_or_404(CarBarnd, id=id)
     form = CarBrandForm(request.POST or None, instance=brand)
@@ -43,7 +45,7 @@ def brandUpdate(request, id):
         context = {'form': form}
         return render(request, 'crud/brand/brandUpdate.html', context)
 
-
+@login_required(login_url='login')
 def brandDelete(request, id):
     brand = get_object_or_404(CarBarnd, id=id)
     form = CarBrandForm(request.POST or None, instance=brand)
@@ -98,7 +100,7 @@ def user_logout(request):
 def register(request):
     return render(request, 'authention/register.html')
 
-
+@login_required(login_url='login')
 def carNew(request):
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
@@ -135,13 +137,13 @@ def carNew(request):
         return render(request, 'crud/car/carNew.html', context)
 
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def carList(request):
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
 
-
+@login_required(login_url='login')
 def carUpdate(request, car_id):
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name  # รูปสินค้าเดิม
@@ -175,7 +177,7 @@ def carUpdate(request, car_id):
         context = {'form': form}
         return render(request, 'crud/car/carUpdate.html', context)
 
-
+@login_required(login_url='login')
 def carDelete(request, car_id):
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
@@ -200,18 +202,19 @@ def customerNew(request):
 def customerList(request):
     return render(request, 'crud/customer/customerList.html')
 
-
+@login_required(login_url='login')
 def customerUpdate(request, cus_id):
     return render(request, 'crud/customer/customerUpdate.html')
 
-
+@login_required(login_url='login')
 def customerDelete(request, cus_id):
     return render(request, 'crud/customer/customerDelete.html')
 
-
+@login_required(login_url='login')
 def employeNew(request):
     return render(request, 'crud/employe/employeNew.html')
 
+@login_required(login_url='login')
 def employeList(request):
     if request.method == 'POST':
         form = EmployForm(request.POST)
@@ -234,16 +237,16 @@ def employeList(request):
         context = {'form': form}
         return render(request, 'crud/employe/employeNew.html', context)
 
-
+@login_required(login_url='login')
 def employeList(request):
     employees = Employ.objects.all().order_by('em_id')
     context = {'employees': employees}
     return render(request, 'crud/employe/employeList.html', context)
 
-
+@login_required(login_url='login')
 def employeUpdate(request, em_id):
     return render(request, 'crud/employe/employeUpdate.html')
 
-
+@login_required(login_url='login')
 def employeDelete(request, em_id):
     return render(request, 'crud/employe/employeDelete.html')
