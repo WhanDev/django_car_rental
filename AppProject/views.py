@@ -1,26 +1,15 @@
-import os
-
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import *
-from .models import *
-
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-import datetime, os
+from django.shortcuts import render, redirect, get_object_or_404
+import os
 from .forms import *
 from .models import *
 from django.contrib import messages
+
 
 # Create your views here.
 def home(request):
     return render(request, 'homepage.html')
-
-
-def login(request):
-    return render(request, 'authention/login.html')
 
 def brandNew(request):
     if request.method == 'POST':
@@ -73,7 +62,7 @@ def user_login(request):
         password = request.POST.get("password")
         user = authenticate(username=userName, password=password)
         if user is not None:
-            # login(request, user)
+            login(request, user)
             if user.is_staff == 0:
                 user = Customer.objects.get(name=userName)
                 request.session['userId'] = user.cus_id
@@ -109,6 +98,7 @@ def user_logout(request):
 def register(request):
     return render(request, 'authention/register.html')
 
+
 def carNew(request):
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
@@ -127,14 +117,18 @@ def carNew(request):
             car.save()
             if os.path.exists('static/cars/' + newfilename):
                 os.remove('static/cars/' + newfilename)
-            os.rename('static/cars/' + filename, 'static/cars/' + newfilename)
+                os.rename('static/cars/' + filename, 'static/cars/' + newfilename)
+            return redirect('carList')
         else:
-            car = get_object_or_404(Car, car_id=request.POST['car_id'])
-            if car:
+            car_id = request.POST.get('car_id', None)
+            if car_id:
                 messages.add_message(request, messages.WARNING, "รหัสซ้ำกับที่มีอยู่แล้วในระบบ")
                 context = {'form': form}
                 return render(request, 'crud/car/carNew.html', context)
-            return redirect('carList')
+            else:
+                # Handle the case where neither form.is_valid() nor the 'else' condition is met
+                messages.add_message(request, messages.ERROR, "ข้อมูลไม่ถูกต้อง")
+                return redirect('carList')  # Redirect to an appropriate page
     else:
         form = CarForm()
         context = {'form': form}
@@ -179,7 +173,8 @@ def carUpdate(request, car_id):
         form = CarForm(instance=car)
         form.updateForm()
         context = {'form': form}
-        return render(request, 'crud/car/carUpdate.html',context)
+        return render(request, 'crud/car/carUpdate.html', context)
+
 
 def carDelete(request, car_id):
     car = get_object_or_404(Car, car_id=car_id)
@@ -193,9 +188,10 @@ def carDelete(request, car_id):
         form = CarForm(instance=car)
         form.deleteForm()
         context = {'form': form, 'car': car}
-        return render(request, 'crud/car/carDelete.html',context)
+        return render(request, 'crud/car/carDelete.html', context)
 
     return render(request, 'crud/car/carNew.html')
+
 
 def customerNew(request):
     return render(request, 'crud/customer/customerNew.html')
@@ -216,7 +212,7 @@ def customerDelete(request, cus_id):
 def employeNew(request):
     return render(request, 'crud/employe/employeNew.html')
 
-def employeNew(request):
+def employeList(request):
     if request.method == 'POST':
         form = EmployForm(request.POST)
         if form.is_valid():
