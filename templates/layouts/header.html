@@ -13,7 +13,7 @@
 
         <div class="col col-4" align="right">
             {% if request.session.userId %}
-                <i class="fa-regular fa-user"></i> Welcome user : {{ request.session.userName }}
+                <i class="fa-regular fa-user"></i> Welcome : {{ request.session.userName|upper }}
 {#                       <div class="row">#}
 {#                           <div class="col col-6 text-lg-start">#}
 {#                               {% if request.session.userStatus == 'customer' %}#}

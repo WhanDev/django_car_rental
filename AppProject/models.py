@@ -35,12 +35,13 @@ class Car(models.Model):
 
 class Customer(models.Model):
     cus_id = models.CharField(max_length=13, primary_key=True, default="")
+    username = models.CharField(max_length=100, default="")
     email = models.CharField(max_length=100, default="")
-    name = models.CharField(max_length=100, default="")
+    firstname = models.CharField(max_length=100, default="")
+    lastname = models.CharField(max_length=100, default="")
     # password
     tell = models.CharField(max_length=10, default="")
     address = models.TextField(default="")
-    role = models.CharField(max_length=20, default="ลูกค้า")
 
     def __str__(self):
         return str(self.cus_id) + ":" + self.name + "|" + self.email

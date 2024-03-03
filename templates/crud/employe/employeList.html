@@ -19,8 +19,8 @@
                 <td class="text-center">{{ employee.name }}</td>
                 <td class="text-center">{{ employee.role }}</td>
                 <td class="text-lg-center">
-                    <a href="#" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
-                    <a href="#" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+                    <a href="{% url 'employeUpdate' employee.em_id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+                    <a href="{% url 'employeDelete' employee.em_id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
                 </td>
             </tr>
         {% endfor %}

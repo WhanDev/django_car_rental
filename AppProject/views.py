@@ -66,9 +66,9 @@ def user_login(request):
         if user is not None:
             login(request, user)
             if user.is_staff == 0:
-                user = Customer.objects.get(name=userName)
+                user = Customer.objects.get(username=userName)
                 request.session['userId'] = user.cus_id
-                request.session['userName'] = user.name
+                request.session['userName'] = user.username
                 request.session['userStatus'] = 'customer'
                 return render(request, 'homepage.html')
             else:
@@ -77,6 +77,7 @@ def user_login(request):
                 request.session['userName'] = emp.name
                 request.session['userStatus'] = emp.role
                 return render(request, 'homepage.html')
+
             messages.add_message(request, messages.INFO, "Login success..")
         else:
             messages.error(request, "User Name or Password not correct..!!!")
@@ -97,8 +98,6 @@ def user_logout(request):
     else:
         return redirect('login')
 
-def register(request):
-    return render(request, 'authention/register.html')
 
 @login_required(login_url='login')
 def carNew(request):
@@ -196,11 +195,41 @@ def carDelete(request, car_id):
 
 
 def customerNew(request):
-    return render(request, 'crud/customer/customerNew.html')
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            password = request.POST['password']
+            confirmPassword = request.POST['conf_password']
+            if password == confirmPassword:
+                form.save()
+                cus_id = request.POST['cus_id']
+                username = request.POST['username']
+                email = request.POST['email']
+                password = request.POST['password']
+                user = User.objects.create_user(username, email, password)
+                user.first_name = username
+                user.is_staff = False
+                user.save()
+                messages.add_message(request, messages.WARNING, "REGISTER SUCCESS")
+                return redirect('homebase')
+            else:
+                messages.add_message(request, messages.WARNING, "รหัสผ่านกับรหัสผ่านที่ยืนยันไม่ตรงกัน...")
+                context = {'form': form}
+                return render(request, 'crud/customer/customerNew.html', context)
+        else:
+            messages.add_message(request, messages.WARNING, "ป้อนข้อมูลไม่ถูกต้อง ไม่สมบูรณ์...")
+            context = {'form': form}
+            return render(request, 'crud/customer/customerNew.html', context)
+    else:
+        form = CustomerForm()
+        context = {'form': form}
+        return render(request, 'crud/customer/customerNew.html', context)
 
 
 def customerList(request):
-    return render(request, 'crud/customer/customerList.html')
+    customers = Customer.objects.all().order_by('cus_id')
+    context = {'customers': customers}
+    return render(request, 'crud/customer/customerList.html', context)
 
 @login_required(login_url='login')
 def customerUpdate(request, cus_id):
@@ -210,12 +239,9 @@ def customerUpdate(request, cus_id):
 def customerDelete(request, cus_id):
     return render(request, 'crud/customer/customerDelete.html')
 
-@login_required(login_url='login')
-def employeNew(request):
-    return render(request, 'crud/employe/employeNew.html')
 
 @login_required(login_url='login')
-def employeList(request):
+def employeNew(request):
     if request.method == 'POST':
         form = EmployForm(request.POST)
         if form.is_valid():
@@ -245,8 +271,29 @@ def employeList(request):
 
 @login_required(login_url='login')
 def employeUpdate(request, em_id):
-    return render(request, 'crud/employe/employeUpdate.html')
+    emp = get_object_or_404(Employ, em_id=em_id)
+    if request.method == 'POST':
+        form = EmployForm(request.POST or None, instance=emp)
+        if form.is_valid():
+            form.save()
+            return redirect('employeList')
+        else:
+            context = {'form': form}
+            return render(request, 'crud/employe/employeeUpdate.html', context)
+    else:
+        form = EmployForm(instance=emp)
+        form.updateForm()
+        context = {'form': form, }
+        return render(request, 'crud/employe/employeUpdate.html', context)
 
 @login_required(login_url='login')
 def employeDelete(request, em_id):
-    return render(request, 'crud/employe/employeDelete.html')
+    emp = get_object_or_404(Employ, em_id=em_id)
+    if request.method == 'POST':
+        emp.delete()
+        return redirect('employeList')
+    else:
+        form = EmployForm(instance=emp)
+        form.deleteForm()
+        context = {'form': form, 'employee': emp}
+        return render(request, 'crud/employe/employeDelete.html', context)
