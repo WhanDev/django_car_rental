@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1 class="text-center">
-ลบข้อมูลรถ
-    </h1>
-<form method="POST"  class="form form-control text-primary">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <p class="text-center">
-            <button type="button" class="btn btn-secondary" onclick="history.back()">
-                 <i class="fa fa-rotate-back"></i> Back
-            </button>
-            {% if car.getCountOrder == 0 %}
-                <button type="submit" class="btn btn-danger" onclick="return confirm('โปรดยืนยันการลบรายการนี้')">
-                     <i class="fa-solid fa-trash"></i> Delete
+    <div>
+        <h2 class="text-center mt-3 mb-2">ลบข้อมูลรถ</h2>
+        <form method="POST" class="form form-control text-primary">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="text-center">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> Back
                 </button>
-            {% else %}
-                <button class="btn btn-lg btn-danger disabled">
-                     มีการเช่าแล้ว ไม่สามารถลบได้
-                </button>
-            {% endif %}
-        </p>
-    </form>
+                {% if car.getCountOrder == 0 %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('โปรดยืนยันการลบรายการนี้')">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                {% else %}
+                    <button class="btn btn-lg btn-danger disabled">
+                        มีการเช่าแล้ว ไม่สามารถลบได้
+                    </button>
+                {% endif %}
+            </p>
+        </form>
+    </div>
 {% endblock %}

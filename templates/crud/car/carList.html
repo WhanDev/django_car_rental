@@ -1,35 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1 class="text-center">
-ข้อมูลรถ
-    </h1>
-<table class="table table-primary table-striped table-hover table-bordered">
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+        <h2 class="text-center mb-0">จัดการข้อมูลรถ</h2>
+        <a href="{% url 'carNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูลรถ </a>
+    </div>
+    <table class="table table-striped table-hover table-bordered">
         <tr class="bg-white text-primary text-center">
             <th class="col col-1">รหัสรถ</th>
             <th class="col col-1">ยี่ห้อ</th>
-            <th class="col col-3">รุ่น </th>
-            <th class="col col-2">ประเภทรถ </th>
-            <th class="col col-1">ราคา </th>
-            <th class="col col-1">อัตราค่าเช่า </th>
-            <th class="col col-2">รูปภาพ </th>
-            <th class="col col-1">จัดการ <a href="{% url 'carNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูลรถ </a></th>
+            <th class="col col-1">รุ่น</th>
+            <th class="col col-1">ประเภทเกียร์</th>
+            <th class="col col-1">ปริมาณ CC</th>
+            <th class="col col-2">รูปภาพ</th>
+            <th class="col col-1">จัดการข้อมูล</th>
         </tr>
 
-    {% for car in cars %}
-        <tr>
-            <td class="text-center">{{ car.car_id }}</td>
-            <td>{{ car.brand.name }}</td>
-            <td>{{ car.model }}</td>
-            <td>{{ car.type }}</td>
-            <td class="text-end">{{ car.price | floatformat:2}}</td>
-            <td class="text-center">{{ car.rental_rate }}</td>
-            <td><img src="/cars/Audi-A1-Sportback-scaled.jpg" width="120px" height="100px" class="img img-thumbnail"></td>
-            <td class="text-lg-center">
-                <a href="{% url 'carUpdate' car.car_id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
-                <a href="{% url 'carDelete' car.car_id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
-            </td>
-        </tr>
-    {% endfor %}
+        {% for car in cars %}
+            <tr>
+                <td class="text-center">{{ car.car_id }}</td>
+                <td class="text-center">{{ car.brand.name }}</td>
+                <td class="text-center">{{ car.model }}</td>
+                <td class="text-center">{{ car.gear }}</td>
+                <td class="text-center">{{ car.car_cc }}</td>
+                <td class="text-center">
+                    <img src="/{{ car.picture }}" width="120px">
+                </td>
+                <td class="text-lg-center">
+                    <a href="{% url 'carUpdate' car.car_id %}" class="btn btn-warning"> <i class="fa fa-tools"> </i>
+                    </a>
+                    <a href="{% url 'carDelete' car.car_id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+                </td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}
