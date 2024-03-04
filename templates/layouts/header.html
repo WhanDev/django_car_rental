@@ -8,7 +8,13 @@
             </h1>
         </div>
         <div class="col col-4">
-
+            {% if request.session.userId is None %}
+                {% include 'layouts/navigationbars_customer.html' %}
+            {% else %}
+                    {% if request.session.userStatus == 'customer' %}
+                        {% include 'layouts/navigationbars_customer.html' %}
+                    {% endif %}
+            {% endif %}
         </div>
 
         <div class="col col-4" align="right">

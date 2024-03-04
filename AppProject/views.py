@@ -12,6 +12,9 @@ from django.contrib import messages
 def home(request):
     return render(request, 'homepage.html')
 
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
 @login_required(login_url='login')
 def brandNew(request):
     if request.method == 'POST':
@@ -76,7 +79,7 @@ def user_login(request):
                 request.session['userId'] = emp.em_id
                 request.session['userName'] = emp.name
                 request.session['userStatus'] = emp.role
-                return render(request, 'homepage.html')
+                return render(request, 'dashboard.html')
 
             messages.add_message(request, messages.INFO, "Login success..")
         else:

@@ -20,19 +20,10 @@
         </div>
 
         <div class="row">
-            <div class="col col-2" style="background-color: #F1F1E4">
-                <h1 style="font-size: 18px">
-                    MENU
-                </h1>
-                {% include 'layouts/navigationbars.html' %}
-            </div>
-            <div class="col col-10" style="background-color: #f4f4f4">
-            {% for message in messages %}
+            <div class="col col-12" style="background-color: #f4f4f4">{% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                     role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
                     {{ message}}
                 </div>
@@ -42,6 +33,33 @@
                 {% endblock %}
             </div>
         </div>
+
+        {% if request.session.userStatus == 'employee' %}
+            <div class="row">
+                <div class="col col-2" style="background-color: #F1F1E4">
+                    <h1 style="font-size: 18px">
+                        MENU
+                    </h1>
+                    {% include 'layouts/navigationbars_employee.html' %}
+                </div>
+                <div class="col col-10" style="background-color: #f4f4f4">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible"
+                        role="alert">
+                        <button type="button" class="close" data-dismiss="alert"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message}}
+                    </div>
+                {% endfor %}
+                    {% block content_emp %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 </body>
 </html>
