@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_emp %}
+    <div>
+        <h2 class="text-center mt-3 mb-2">ยืนยันการเช่ารถ</h2>
+        <div class="row">
+            <h4>ข้อมูลผู้เช่า</h4>
+            <div class="col-2">
+                <p>ชื่อ:</p>
+                <p>ติดต่อ:</p>
+                <p>ที่อยู่:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ emp.name }}</p>
+                <p>{{ emp.tell }}</p>
+                <p>{{ emp.address }}</p>
+            </div>
+            <h4>ข้อมูลรถ</h4>
+            <div class="col-2">
+                <p>ยี่ห้อรถ:</p>
+                <p>รุ่น:</p>
+                <p>ประเภทเกียร์:</p>
+                <p>ปริมาณ CC:</p>
+                <p>ระยะเวลาที่เช่า:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ car.brand.name }}</p>
+                <p>{{ car.model }}</p>
+                <p>{{ car.gear }}</p>
+                <p>{{ car.car_cc }}</p>
+                <p>{{ ren_start }} ถึง {{ ran_end }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

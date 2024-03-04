@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_emp %}
+    <div>
+        <h2 class="text-center mt-3 mb-2">เช่ารถ</h2>
+        <div class="row">
+            <h4>ข้อมูลรถ</h4>
+            <div class="col-2">
+                <p>ยี่ห้อรถ:</p>
+                <p>รุ่น:</p>
+                <p>ประเภทเกียร์:</p>
+                <p>ปริมาณ CC:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ car.brand.name }}</p>
+                <p>{{ car.model }}</p>
+                <p>{{ car.gear }}</p>
+                <p>{{ car.car_cc }}</p>
+            </div>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="start_date">วันที่เริ่มเช่า:</label>
+            <input type="date" id="start_date" name="start_date" class="form-control" required>
+
+            <label for="end_date">เช่าถึงวันที่:</label>
+            <input type="date" id="end_date" name="end_date" class="form-control" required>
+
+            <p class="text-center">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> ย้อนกลับ
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i>ถัดไป
+                </button>
+            </p>
+        </form>
+    </div>
+{% endblock %}
