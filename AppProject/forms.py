@@ -1,5 +1,7 @@
 from django import forms
+
 from .models import *
+
 class CarBrandForm(forms.ModelForm):
     class Meta:
         model = CarBarnd
@@ -18,7 +20,7 @@ class CarBrandForm(forms.ModelForm):
 class CarForm(forms.ModelForm):
     class Meta:
         model = Car
-        fields = ('car_id', 'brand', 'model', 'gear', 'car_cc','picture')
+        fields = ('car_id', 'brand', 'model', 'gear', 'car_cc', 'picture')
         widgets = {
             'car_id': forms.TextInput(attrs={'class': 'form-control', 'maxlength': 5}),
             'brand': forms.Select(attrs={'class': 'form-control'}),
@@ -55,11 +57,13 @@ class CarForm(forms.ModelForm):
         self.fields['car_cc'].widget.attrs['disabled'] = True
         self.fields['picture'].widget.attrs['disabled'] = True
 
+
 class EmployForm(forms.ModelForm):
     ROLES = [
         ('employee', 'พนักงาน'),
         ('admin', 'แอดมิน'),
     ]
+
     class Meta:
         model = Employ
         fields = ('em_id', 'email', 'name', 'tell', 'address', 'role')
@@ -79,6 +83,7 @@ class EmployForm(forms.ModelForm):
             'address': 'ที่อยู่',
             'role': 'สิทธิผู้ใช้งาน',
         }
+
     def updateForm(self):
         self.fields['em_id'].widget.attrs['readonly'] = True
         self.fields['em_id'].label = 'รหัสพนักงาน [ไม่อนุญาตให้แก้ไขได้]'
@@ -98,10 +103,11 @@ class EmployForm(forms.ModelForm):
         self.fields['address'].widget.attrs['disabled'] = True
         self.fields['role'].widget.attrs['disabled'] = True
 
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ('cus_id', 'username', 'email', 'firstname', 'lastname', 'tell', 'address', )
+        fields = ('cus_id', 'username', 'email', 'firstname', 'lastname', 'tell', 'address',)
         widgets = {
             'cus_id': forms.TextInput(attrs={'class': 'form-control', 'size': 13, 'maxlength': 13}),
             'username': forms.TextInput(attrs={'class': 'form-control', 'size': 60, 'maxlength': 50}),
@@ -118,4 +124,17 @@ class CustomerForm(forms.ModelForm):
             'lastname': 'นามสกุล',
             'tell': 'เบอร์โทร',
             'address': 'ที่อยู่',
+        }
+
+class RentalOrderForm(forms.ModelForm):
+    class Meta:
+        model = RentalOrder
+        fields = ['ren_start', 'ran_end']
+        widgets = {
+            'ren_start': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'ran_end': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+        }
+        labels = {
+            'ren_start': 'วันที่เริ่มเช่า',
+            'ran_end': 'เช่าถึงวันที่',
         }

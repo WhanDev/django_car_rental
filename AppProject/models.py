@@ -26,6 +26,10 @@ CC_CHOICES = [
     ('650', '650'),
 ]
 
+Status_CHOICES = [
+    ('enable', 'พร้อมให้เช่า'),
+    ('disibled', 'ไม่พร้อมให้เช่า'),
+]
 
 class Car(models.Model):
     car_id = models.CharField(max_length=5, primary_key=True, default="")
@@ -33,15 +37,15 @@ class Car(models.Model):
     model = models.CharField(max_length=100, default="")
     gear = models.CharField(max_length=20, choices=Gear_CHOICES, default="manual")
     car_cc = models.CharField(max_length=20, choices=CC_CHOICES, default="125")
+    status = models.CharField(max_length=20, choices=Status_CHOICES, default="enable")
     picture = models.ImageField(upload_to='static/cars/', default="")
 
     def __str__(self):
-        return str(self.car_id) + ":" + self.brand + self.model + self.gear + self.car_cc
+        return str(self.car_id) + ":" + self.brand.name + self.model + self.gear + self.car_cc
 
     def getCountOrder(self):
         count = 0
         return count
-
 
 class Customer(models.Model):
     cus_id = models.CharField(max_length=13, primary_key=True, default="")
@@ -54,7 +58,7 @@ class Customer(models.Model):
     address = models.TextField(default="")
 
     def __str__(self):
-        return str(self.cus_id) + ":" + self.name + "|" + self.email
+        return str(self.cus_id) + ":" + self.username + "|" + self.email
 
 
 ROLES = [
@@ -76,7 +80,7 @@ class Employ(models.Model):
         return str(self.em_id) + ":" + self.name + "|" + self.email
 
 
-class Rental(models.Model):
+class RentalOrder(models.Model):
     id = models.AutoField(primary_key=True)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE, default=None)
     cus_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=None)
@@ -84,6 +88,36 @@ class Rental(models.Model):
     ran_end = models.DateField(null=True, blank=True)
     total = models.FloatField(default=0.00)
 
+    def save(self, *args, **kwargs):
+        if self.rent_start and self.rent_end and self.car.gear and self.car.car_cc:
+            duration = (self.rent_end - self.rent_start).days if self.rent_end else 1
+            if self.car.gear == 'manual':
+                gear_rate = 300
+            else:
+                gear_rate = 600
+            if self.car.car_cc == '125':
+                cc_rate = 300
+            elif self.car.car_cc == '150':
+                cc_rate = 600
+            elif self.car.car_cc == '300':
+                cc_rate = 900
+            else:
+                cc_rate = 1200
+            self.total = duration * (gear_rate + cc_rate)
+        super(RentalOrder, self).save(*args, **kwargs)
+
+class RentalReture(models.Model):
+    id = models.AutoField(primary_key=True)
+    car_id = models.ForeignKey(Car, on_delete=models.CASCADE, default=None)
+    cus_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=None)
+    reture_date = models.DateField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        super(RentalReture, self).save(*args, **kwargs)
+
+        if self.car_id:
+            self.car_id.status = 'Returned'
+            self.car_id.save()
 
 class DailyReport(models.Model):
     date = models.DateField()

@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-<h1 class="text-center">
-    เพิ่มข้อมูลยี่ห้อรถ
-</h1>
-<form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p class="text-center">
-        <button type="button" class="btn btn-secondary" onclick="history.back()">
-            <i class="fa fa-rotate-back"></i> ย้อนกลับ
-        </button>
-        <button type="submit" class="btn btn-success">
-            <i class="fa-solid fa-floppy-disk"></i> บันทึก
-        </button>
-    </p>
-</form>
+    <div>
+        <h2 class="text-center mt-3 mb-2">เพิ่มข้อมูลยี่ห้อรถ</h2>
+        <form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="text-center">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> ย้อนกลับ
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i> บันทึก
+                </button>
+            </p>
+        </form>
+    </div>
 {% endblock %}

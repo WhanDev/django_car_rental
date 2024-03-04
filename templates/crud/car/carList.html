@@ -12,6 +12,7 @@
             <th class="col col-1">รุ่น</th>
             <th class="col col-1">ประเภทเกียร์</th>
             <th class="col col-1">ปริมาณ CC</th>
+            <th class="col col-1">สถานะ</th>
             <th class="col col-2">รูปภาพ</th>
             <th class="col col-1">จัดการข้อมูล</th>
         </tr>
@@ -21,8 +22,19 @@
                 <td class="text-center">{{ car.car_id }}</td>
                 <td class="text-center">{{ car.brand.name }}</td>
                 <td class="text-center">{{ car.model }}</td>
-                <td class="text-center">{{ car.gear }}</td>
+                {% if car.gear == 'manual' %}
+                    <td class="text-center">เกียร์ธรรมดา</td>
+                {% endif %}
+                {% if car.gear != 'manual' %}
+                    <td class="text-center">เกียร์ออโต</td>
+                {% endif %}
                 <td class="text-center">{{ car.car_cc }}</td>
+                {% if car.status == 'enable' %}
+                    <td class="text-center text-success">พร้อมให้เช่า</td>
+                {% endif %}
+                {% if car.status != 'enable' %}
+                    <td class="text-center text-danger">ไม่พร้อมให้เช่า</td>
+                {% endif %}
                 <td class="text-center">
                     <img src="/{{ car.picture }}" width="120px">
                 </td>

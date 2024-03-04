@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 import os
+
+from django.urls import reverse
+
 from .forms import *
 from .models import *
 from django.contrib import messages
@@ -12,8 +15,10 @@ from django.contrib import messages
 def home(request):
     return render(request, 'homepage.html')
 
+
 def dashboard(request):
     return render(request, 'dashboard.html')
+
 
 @login_required(login_url='login')
 def brandNew(request):
@@ -103,6 +108,7 @@ def user_logout(request):
     else:
         return redirect('login')
 
+
 @login_required(login_url='login')
 def carNew(request):
     if request.method == 'POST':
@@ -147,6 +153,7 @@ def carUpdate(request, car_id):
     else:
         context = {'form': form}
         return render(request, 'crud/car/carUpdate.html', context)
+
 
 @login_required(login_url='login')
 def carDelete(request, car_id):
@@ -212,6 +219,7 @@ def customerUpdate(request, cus_id):
 def customerDelete(request, cus_id):
     return render(request, 'crud/customer/customerDelete.html')
 
+
 @login_required(login_url='login')
 def employeNew(request):
     if request.method == 'POST':
@@ -272,3 +280,38 @@ def employeDelete(request, em_id):
         form.deleteForm()
         context = {'form': form, 'employee': emp}
         return render(request, 'crud/employe/employeDelete.html', context)
+
+
+@login_required(login_url='login')
+def rentalOrder(request, em_id, car_id):
+    emp = get_object_or_404(Employ, em_id=em_id)
+    car_id = get_object_or_404(Car, car_id=car_id)
+    if request.method == 'POST':
+        ren_start = request.POST.get('start_date')
+        ran_end = request.POST.get('end_date')
+        request.session['ren_start'] = ren_start
+        request.session['ran_end'] = ran_end
+        url = reverse('rentalConfirm', args=[em_id, car_id.car_id])
+        return redirect(url)
+    else:
+        context = {'emp': emp, 'car': car_id}
+        return render(request, 'rent/rentOrder.html', context)
+
+
+@login_required(login_url='login')
+def rentalConfirm(request, em_id, car_id):
+    emp = get_object_or_404(Employ, em_id=em_id)
+    car_id = get_object_or_404(Car, car_id=car_id)
+    ren_start = request.session.get('ren_start')
+    ran_end = request.session.get('ran_end')
+    # คำนวI
+
+    # if post
+        # del save n del session()
+        # alret
+        # redi
+
+    context = {'emp': emp, 'car': car_id, 'ren_start': ren_start, 'ran_end': ran_end}
+    return render(request, 'rent/rentalConfirm.html', context)
+
+# del save n del session()

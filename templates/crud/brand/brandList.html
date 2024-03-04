@@ -1,28 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-<h1 class="text-center">
-    ข้อมูลยี่ห้อรถ
-</h1>
-<table class="table table-striped table-hover table-bordered">
+<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+        <h2 class="text-center mb-0">จัดการข้อมูลรถ</h2>
+        <a href="{% url 'brandNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูลยี่ห้อรถ </a>
+    </div>
+    <table class="table table-striped table-hover table-bordered">
     <tr class="bg-white text-primary text-center">
-        <th class="col col-2">รหัสยี่ห้อรถ</th>
-        <th class="col col-3">ชื่อ</th>
-        <th class="col col-2">
-            จัดการ
-            <a href="{% url 'brandNew' %}" class="btn btn-sm btn-primary">
-                <i class="fa fa-plus">
-                </i> เพิ่มข้อมูล
-            </a>
-        </th>
+        <th class="col col-1">รหัสยี่ห้อรถ</th>
+        <th class="col col-1">ชื่อ</th>
+        <th class="col col-1">จัดการข้อมูล</th>
     </tr>
-
     {% for brands in brand %}
     <tr>
         <td class="text-center">{{ brands.id }}</td>
         <td>{{ brands.name }}</td>
         <td class="text-lg-center">
-            <a href="{% url 'brandUpdate' brands.id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+            <a href="{% url 'brandUpdate' brands.id %}" class="btn btn-warning"> <i class="fa fa-tools"> </i> </a>
             <a href="{% url 'brandDelete' brands.id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
         </td>
     </tr>
