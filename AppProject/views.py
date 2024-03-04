@@ -9,6 +9,21 @@ from django.contrib import messages
 
 
 # Create your views here.
+def chkPermission(request):
+    if 'userStatus' in request.session:
+        userStatus = request.session['userStatus']
+        if userStatus == 'customer':
+            messages.add_message(request, messages.WARNING, "ท่านกำลังเข้าใช้ในส่วนที่ไม่ได้รับอนุญาต!!!")
+            return False
+        else:
+            return True
+    else:
+        if Employ.objects.count() != 0:
+            messages.add_message(request, messages.WARNING, "ท่านกำลังเข้าใช้ในส่วนที่ไม่ได้รับอนุญาต!!!")
+            return False
+        else:
+            return True
+
 def home(request):
     return render(request, 'homepage.html')
 
@@ -230,6 +245,8 @@ def customerNew(request):
 
 
 def customerList(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     customers = Customer.objects.all().order_by('cus_id')
     context = {'customers': customers}
     return render(request, 'crud/customer/customerList.html', context)
@@ -245,6 +262,8 @@ def customerDelete(request, cus_id):
 
 @login_required(login_url='login')
 def employeNew(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     if request.method == 'POST':
         form = EmployForm(request.POST)
         if form.is_valid():
@@ -268,12 +287,16 @@ def employeNew(request):
 
 @login_required(login_url='login')
 def employeList(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     employees = Employ.objects.all().order_by('em_id')
     context = {'employees': employees}
     return render(request, 'crud/employe/employeList.html', context)
 
 @login_required(login_url='login')
 def employeUpdate(request, em_id):
+    if not chkPermission(request):
+        return redirect('homebase')
     emp = get_object_or_404(Employ, em_id=em_id)
     if request.method == 'POST':
         form = EmployForm(request.POST or None, instance=emp)
@@ -291,6 +314,8 @@ def employeUpdate(request, em_id):
 
 @login_required(login_url='login')
 def employeDelete(request, em_id):
+    if not chkPermission(request):
+        return redirect('homebase')
     emp = get_object_or_404(Employ, em_id=em_id)
     if request.method == 'POST':
         emp.delete()
