@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Count
 
+
 class CarBarnd(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default="")
@@ -13,25 +14,34 @@ class CarBarnd(models.Model):
         return count
 
 
-Model_CHOICES = [
-        ('car', 'รถยนต์'),
-        ('motorcycle', 'มอเตอร์ไซค์'),
-    ]
+Gear_CHOICES = [
+    ('manual', 'เกียร์ธรรมดา'),
+    ('automatic', 'เกียร์ออโต'),
+]
+
+CC_CHOICES = [
+    ('125', '125'),
+    ('150', '150'),
+    ('300', '300'),
+    ('650', '650'),
+]
+
+
 class Car(models.Model):
     car_id = models.CharField(max_length=5, primary_key=True, default="")
     brand = models.ForeignKey(CarBarnd, on_delete=models.CASCADE, default=None)
     model = models.CharField(max_length=100, default="")
-    type = models.CharField(max_length=20, choices=Model_CHOICES)
-    price = models.FloatField(default=0.00)
-    rental_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    gear = models.CharField(max_length=20, choices=Gear_CHOICES, default="manual")
+    car_cc = models.CharField(max_length=20, choices=CC_CHOICES, default="125")
     picture = models.ImageField(upload_to='static/cars/', default="")
 
     def __str__(self):
-        return str(self.car_id) + ":" + self.brand + "|" + self.model
+        return str(self.car_id) + ":" + self.brand + self.model + self.gear + self.car_cc
 
     def getCountOrder(self):
         count = 0
         return count
+
 
 class Customer(models.Model):
     cus_id = models.CharField(max_length=13, primary_key=True, default="")
@@ -48,9 +58,11 @@ class Customer(models.Model):
 
 
 ROLES = [
-        ('employee', 'พนักงาน'),
-        ('admin', 'แอดมิน'),
-    ]
+    ('employee', 'พนักงาน'),
+    ('admin', 'แอดมิน'),
+]
+
+
 class Employ(models.Model):
     em_id = models.CharField(max_length=13, primary_key=True, default="")
     email = models.CharField(max_length=100, default="")

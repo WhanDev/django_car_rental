@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-    <h1 class="text-center">
-แก้ไชข้อมูลรถ
-    </h1>
-<form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <p class="text-center">
-            <a type="button" class="btn btn-secondary" onclick="history.back()">
-                 <i class="fa fa-rotate-back"></i> ย้อนกลับ
-            </a>
+{% block content_emp %}
+    <div>
+        <h2 class="text-center mt-3 mb-2">แก้ไขข้อมูลรถ</h2>
+        <form method="POST" enctype="multipart/form-data" class="form form-control text-primary">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="text-center">
+                <a type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> ย้อนกลับ
+                </a>
 
-            <button type="submit" class="btn btn-success">
-                 <i class="fa-solid fa-tools"></i> บันทึก
-            </button>
-        </p>
-    </form>
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-tools"></i> บันทึก
+                </button>
+            </p>
+        </form>
+    </div>
 {% endblock %}

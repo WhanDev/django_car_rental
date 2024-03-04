@@ -48,6 +48,7 @@ def brandList(request):
     context = {'brand': brand}
     return render(request, 'crud/brand/brandList.html', context)
 
+
 @login_required(login_url='login')
 def brandUpdate(request, id):
     brand = get_object_or_404(CarBarnd, id=id)
@@ -62,6 +63,7 @@ def brandUpdate(request, id):
     else:
         context = {'form': form}
         return render(request, 'crud/brand/brandUpdate.html', context)
+
 
 @login_required(login_url='login')
 def brandDelete(request, id):
@@ -116,38 +118,20 @@ def user_logout(request):
     else:
         return redirect('login')
 
-
 @login_required(login_url='login')
 def carNew(request):
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            newForm = form.save(commit=False)
-            car_id = newForm.car_id
-            filepath = newForm.picture.name
-            point = filepath.rfind('.')
-            ext = filepath[point:]
-            filenames = filepath.split('/')
-            filename = filenames[len(filenames) - 1]
-            newfilename = car_id + ext
-            newForm.save()
-            car = get_object_or_404(Car, car_id=car_id)
-            car.picture.name = '/cars/' + newfilename
-            car.save()
-            if os.path.exists('static/cars/' + newfilename):
-                os.remove('static/cars/' + newfilename)
-                os.rename('static/cars/' + filename, 'static/cars/' + newfilename)
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'บันทึกเรียบร้อย')
             return redirect('carList')
         else:
-            car_id = request.POST.get('car_id', None)
-            if car_id:
+            car = get_object_or_404(Car, car_id=request.POST['car_id'])
+            if car:
                 messages.add_message(request, messages.WARNING, "รหัสซ้ำกับที่มีอยู่แล้วในระบบ")
                 context = {'form': form}
                 return render(request, 'crud/car/carNew.html', context)
-            else:
-                # Handle the case where neither form.is_valid() nor the 'else' condition is met
-                messages.add_message(request, messages.ERROR, "ข้อมูลไม่ถูกต้อง")
-                return redirect('carList')  # Redirect to an appropriate page
     else:
         form = CarForm()
         context = {'form': form}
@@ -160,37 +144,22 @@ def carList(request):
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
 
+
 @login_required(login_url='login')
 def carUpdate(request, car_id):
     car = get_object_or_404(Car, car_id=car_id)
-    picture = car.picture.name  # รูปสินค้าเดิม
+    picture = car.picture.name
+    form = CarForm(request.POST or None, request.FILES or None, instance=car)
     if request.method == 'POST':
-        form = CarForm(request.POST or None, instance=car, files=request.FILES)
         if form.is_valid():
-            newForm = form.save(commit=False)
-            car_id = newForm.car_id
-            print(newForm.picture.name)
-            if newForm.picture.name != picture:  # หากเลือกรูปสินค้าใหม่
-                newForm.save()
-                filepath = newForm.picture.name
-                point = filepath.rfind('.')
-                ext = filepath[point:]
-                filenames = filepath.split('/')
-                filename = filenames[len(filenames) - 1]
-                newfilename = car_id + ext
-                product = get_object_or_404(Car, car_id=car_id)
-                product.picture.name = '/cars/' + newfilename
-                product.save()
-                if os.path.exists('static/cars/' + newfilename):
-                    os.remove('static/cars/' + newfilename)
-                os.rename('static/cars/' + filename, 'static/cars/' + newfilename)
-            else:
-                newForm.save()
-        return redirect('carList')
+            if os.path.exists(picture):
+                os.remove(picture)
+            form.save()
+            return redirect('carList')
+        else:
+            context = {'form': form}
+            return render(request, 'crud/car/carUpdate.html', context)
     else:
-        # form = ProductsForm(request.POST or None, instance=product, files=request.FILES)
-        form = CarForm(instance=car)
-        form.updateForm()
         context = {'form': form}
         return render(request, 'crud/car/carUpdate.html', context)
 
@@ -200,15 +169,14 @@ def carDelete(request, car_id):
     picture = car.picture.name
     if request.method == 'POST':
         car.delete()
-        if os.path.exists('static' + picture):
-            os.remove('static' + picture)
+        if os.path.exists(picture):
+            os.remove(picture)
         return redirect('carList')
     else:
         form = CarForm(instance=car)
         form.deleteForm()
         context = {'form': form, 'car': car}
         return render(request, 'crud/car/carDelete.html', context)
-
     return render(request, 'crud/car/carNew.html')
 
 
@@ -251,14 +219,15 @@ def customerList(request):
     context = {'customers': customers}
     return render(request, 'crud/customer/customerList.html', context)
 
+
 @login_required(login_url='login')
 def customerUpdate(request, cus_id):
     return render(request, 'crud/customer/customerUpdate.html')
 
+
 @login_required(login_url='login')
 def customerDelete(request, cus_id):
     return render(request, 'crud/customer/customerDelete.html')
-
 
 @login_required(login_url='login')
 def employeNew(request):
@@ -285,6 +254,7 @@ def employeNew(request):
         context = {'form': form}
         return render(request, 'crud/employe/employeNew.html', context)
 
+
 @login_required(login_url='login')
 def employeList(request):
     if not chkPermission(request):
@@ -292,6 +262,7 @@ def employeList(request):
     employees = Employ.objects.all().order_by('em_id')
     context = {'employees': employees}
     return render(request, 'crud/employe/employeList.html', context)
+
 
 @login_required(login_url='login')
 def employeUpdate(request, em_id):
@@ -311,6 +282,7 @@ def employeUpdate(request, em_id):
         form.updateForm()
         context = {'form': form, }
         return render(request, 'crud/employe/employeUpdate.html', context)
+
 
 @login_required(login_url='login')
 def employeDelete(request, em_id):
