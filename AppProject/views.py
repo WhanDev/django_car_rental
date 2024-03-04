@@ -28,10 +28,14 @@ def home(request):
     return render(request, 'homepage.html')
 
 def dashboard(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     return render(request, 'dashboard.html')
 
 @login_required(login_url='login')
 def brandNew(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     if request.method == 'POST':
         form = CarBrandForm(request.POST)
         if form.is_valid():
@@ -48,9 +52,10 @@ def brandList(request):
     context = {'brand': brand}
     return render(request, 'crud/brand/brandList.html', context)
 
-
 @login_required(login_url='login')
 def brandUpdate(request, id):
+    if not chkPermission(request):
+        return redirect('homebase')
     brand = get_object_or_404(CarBarnd, id=id)
     form = CarBrandForm(request.POST or None, instance=brand)
     if request.method == 'POST':
@@ -67,6 +72,8 @@ def brandUpdate(request, id):
 
 @login_required(login_url='login')
 def brandDelete(request, id):
+    if not chkPermission(request):
+        return redirect('homebase')
     brand = get_object_or_404(CarBarnd, id=id)
     form = CarBrandForm(request.POST or None, instance=brand)
     if request.method == 'POST':
@@ -120,6 +127,8 @@ def user_logout(request):
 
 @login_required(login_url='login')
 def carNew(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -138,15 +147,21 @@ def carNew(request):
         return render(request, 'crud/car/carNew.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def carList(request):
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
 
+def carGrid(request):
+    cars = Car.objects.all().order_by('car_id')
+    context = {'cars': cars}
+    return render(request, 'crud/car/carGrid.html', context)
 
 @login_required(login_url='login')
 def carUpdate(request, car_id):
+    if not chkPermission(request):
+        return redirect('homebase')
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
     form = CarForm(request.POST or None, request.FILES or None, instance=car)
@@ -165,6 +180,8 @@ def carUpdate(request, car_id):
 
 @login_required(login_url='login')
 def carDelete(request, car_id):
+    if not chkPermission(request):
+        return redirect('homebase')
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
     if request.method == 'POST':

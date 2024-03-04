@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1 class="text-center">
+    ข้อมูลรถ
+</h1>
+   <div class="flex p-3">
+        <div class="row">
+            {% for car in cars %}
+                <div class="col-sm-2 mb-2" >
+                    <div class="card " style="border-radius: 15px">
+                        <img src="/{{ car.picture }}" class="card-img-top" alt="..."  height="150px" style="border-radius: 15px">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ car.brand.name }}</h5>
+                            <p class="card-text">{{ car.model }}</p>
+                            <a href="#" class="btn btn-primary">เช่ารถ</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

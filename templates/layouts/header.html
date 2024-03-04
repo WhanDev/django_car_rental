@@ -7,7 +7,7 @@
                 <h4>CAR RENT KHONKAEN</h4>
             </h1>
         </div>
-        <div class="col col-4">
+        <div class="col col-4 pt-2">
             {% if request.session.userId is None %}
                 {% include 'layouts/navigationbars_customer.html' %}
             {% else %}
@@ -17,7 +17,7 @@
             {% endif %}
         </div>
 
-        <div class="col col-4" align="right">
+        <div class="col col-4 pt-2" align="right">
             {% if request.session.userId %}
                 <i class="fa-regular fa-user"></i> Welcome : {{ request.session.userName|upper }}
 {#                       <div class="row">#}
@@ -35,7 +35,8 @@
                 <a href="{% url 'logout' %}" class="text-lg-end text-danger text-decoration-none mx-3"><i class="fa fa-sign-out-alt"></i> Log out</a>
 
             {% else %}
-                <a href="{% url 'login' %}" class="text-lg-end text-success mx-3"><i class="mx-2 fa fa-sign-in-alt"></i>Log in</a>
+                <a href="{% url 'login' %}" class="text-lg-end text-white"><i class="mx-2 fa fa-sign-in-alt"></i>Log in</a>
+                <a href="{% url 'customerNew' %}" class="text-lg-end text-primary"><i class="mx-2 fa-solid fa-id-card"></i>Register</a>
             {% endif %}
         </div>
 

@@ -33,6 +33,7 @@ urlpatterns = [
     
     path('car/new', views.carNew, name='carNew'),
     path('car/', views.carList, name='carList'),
+    path('car/grid', views.carGrid, name='carGrid'),
     path('car/update<car_id>', views.carUpdate, name='carUpdate'),
     path('car/delete<car_id>', views.carDelete, name='carDelete'),
     
