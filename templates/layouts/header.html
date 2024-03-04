@@ -8,12 +8,18 @@
             </h1>
         </div>
         <div class="col col-4">
-
+            {% if request.session.userId is None %}
+                {% include 'layouts/navigationbars_customer.html' %}
+            {% else %}
+                    {% if request.session.userStatus == 'customer' %}
+                        {% include 'layouts/navigationbars_customer.html' %}
+                    {% endif %}
+            {% endif %}
         </div>
 
         <div class="col col-4" align="right">
             {% if request.session.userId %}
-                <i class="fa-regular fa-user"></i> Welcome user : {{ request.session.userName }}
+                <i class="fa-regular fa-user"></i> Welcome : {{ request.session.userName|upper }}
 {#                       <div class="row">#}
 {#                           <div class="col col-6 text-lg-start">#}
 {#                               {% if request.session.userStatus == 'customer' %}#}
