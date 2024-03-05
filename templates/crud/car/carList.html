@@ -31,8 +31,7 @@
                 <td class="text-center">{{ car.car_cc }}</td>
                 {% if car.status == 'enable' %}
                     <td class="text-center text-success">พร้อมให้เช่า</td>
-                {% endif %}
-                {% if car.status != 'enable' %}
+                {% else %}
                     <td class="text-center text-danger">ไม่พร้อมให้เช่า</td>
                 {% endif %}
                 <td class="text-center">

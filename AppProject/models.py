@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 from django.db.models import Count
 
@@ -44,7 +46,7 @@ class Car(models.Model):
         return str(self.car_id) + ":" + self.brand.name + self.model + self.gear + self.car_cc
 
     def getCountOrder(self):
-        count = 0
+        count = RentalOrder.objects.filter(car_id=self).count()
         return count
 
 class Customer(models.Model):
@@ -86,38 +88,28 @@ class RentalOrder(models.Model):
     cus_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=None)
     ren_start = models.DateField()
     ran_end = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=50, default="รอการชำระเงิน")
     total = models.FloatField(default=0.00)
+    #ยกเลิกรายการเช่า
 
-    def save(self, *args, **kwargs):
-        if self.rent_start and self.rent_end and self.car.gear and self.car.car_cc:
-            duration = (self.rent_end - self.rent_start).days if self.rent_end else 1
-            if self.car.gear == 'manual':
-                gear_rate = 300
-            else:
-                gear_rate = 600
-            if self.car.car_cc == '125':
-                cc_rate = 300
-            elif self.car.car_cc == '150':
-                cc_rate = 600
-            elif self.car.car_cc == '300':
-                cc_rate = 900
-            else:
-                cc_rate = 1200
-            self.total = duration * (gear_rate + cc_rate)
-        super(RentalOrder, self).save(*args, **kwargs)
+class RentalPayment(models.Model):
+    id = models.AutoField(primary_key=True)
+    rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
+    date_payment = models.DateTimeField(default=timezone.now)
+    bill = models.ImageField(upload_to='static/bills/', default="")
+    #ชำระเงินแล้ว
+
+class RentalService(models.Model):
+    id = models.AutoField(primary_key=True)
+    rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
+    date_servic = models.DateTimeField(default=timezone.now)
+    #รับรถไปใช้งานแล้ว
 
 class RentalReture(models.Model):
     id = models.AutoField(primary_key=True)
-    car_id = models.ForeignKey(Car, on_delete=models.CASCADE, default=None)
-    cus_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=None)
-    reture_date = models.DateField(null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        super(RentalReture, self).save(*args, **kwargs)
-
-        if self.car_id:
-            self.car_id.status = 'Returned'
-            self.car_id.save()
+    rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
+    date_reture = models.DateTimeField(default=timezone.now)
+    #ส่งคืนรถแล้ว
 
 class DailyReport(models.Model):
     date = models.DateField()

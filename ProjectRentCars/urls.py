@@ -47,7 +47,10 @@ urlpatterns = [
     path('employe/update<em_id>', views.employeUpdate, name='employeUpdate'),
     path('employe/delete<em_id>', views.employeDelete, name='employeDelete'),
 
-    path('rent/<em_id>/<car_id>', views.rentalOrder, name='rentalOrder'),
-    path('rent/<str:em_id>/<str:car_id>/confirm/', views.rentalConfirm, name='rentalConfirm'),
-
+    path('rent/<car_id>', views.rentalOrder, name='rentalOrder'),
+    path('rent/<str:car_id>/confirm/', views.rentalConfirm, name='rentalConfirm'),
+    path('rent/', views.rentalList, name='rentalList'),
+    path('rentAll/', views.rentalListAll, name='rentalListAll'),
+    path('rent/<rent_id>/payment', views.rentalPayment, name='rentalPayment'),
+    path('rent/<rent_id>/paymentConfirm', views.rentalPaymentConfirm, name='rentalPaymentConfirm'),
 ]

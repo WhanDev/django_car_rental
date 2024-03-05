@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -26,6 +28,7 @@ def chkPermission(request):
             return False
         else:
             return True
+
 
 def home(request):
     return render(request, 'homepage.html')
@@ -56,6 +59,7 @@ def brandList(request):
     brand = CarBarnd.objects.all().order_by('id')
     context = {'brand': brand}
     return render(request, 'crud/brand/brandList.html', context)
+
 
 @login_required(login_url='login')
 def brandUpdate(request, id):
@@ -159,10 +163,12 @@ def carList(request):
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
 
+
 def carGrid(request):
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
     return render(request, 'crud/car/carGrid.html', context)
+
 
 @login_required(login_url='login')
 def carUpdate(request, car_id):
@@ -325,35 +331,116 @@ def employeDelete(request, em_id):
 
 
 @login_required(login_url='login')
-def rentalOrder(request, em_id, car_id):
-    emp = get_object_or_404(Employ, em_id=em_id)
+def rentalOrder(request, car_id):
+    cus = request.session["userId"]
     car_id = get_object_or_404(Car, car_id=car_id)
     if request.method == 'POST':
         ren_start = request.POST.get('start_date')
         ran_end = request.POST.get('end_date')
         request.session['ren_start'] = ren_start
         request.session['ran_end'] = ran_end
-        url = reverse('rentalConfirm', args=[em_id, car_id.car_id])
+        url = reverse('rentalConfirm', args=[car_id.car_id])
         return redirect(url)
+
     else:
-        context = {'emp': emp, 'car': car_id}
+        context = {'cus': cus, 'car': car_id}
         return render(request, 'rent/rentOrder.html', context)
 
 
 @login_required(login_url='login')
-def rentalConfirm(request, em_id, car_id):
-    emp = get_object_or_404(Employ, em_id=em_id)
-    car_id = get_object_or_404(Car, car_id=car_id)
+def rentalConfirm(request, car_id):
+    userId = request.session["userId"]
+    cus = get_object_or_404(Customer, cus_id=userId)
+    car = get_object_or_404(Car, car_id=car_id)
     ren_start = request.session.get('ren_start')
     ran_end = request.session.get('ran_end')
-    # คำนวI
 
-    # if post
-        # del save n del session()
-        # alret
-        # redi
+    day_start = datetime.strptime(ren_start, "%Y-%m-%d").date()
+    day_end = datetime.strptime(ran_end, "%Y-%m-%d").date()
 
-    context = {'emp': emp, 'car': car_id, 'ren_start': ren_start, 'ran_end': ran_end}
+    day = (day_end - day_start).days
+
+    if car.gear == 'manual':
+        gear_rate = 300
+    else:
+        gear_rate = 600
+
+    if car.car_cc == '125':
+        cc_rate = 300
+    elif car.car_cc == '150':
+        cc_rate = 600
+    elif car.car_cc == '300':
+        cc_rate = 900
+    else:
+        cc_rate = 1200
+
+    total = day * (gear_rate + cc_rate)
+
+    if request.method == 'POST':
+        rental = RentalOrder()
+        rental.car_id = car
+        rental.cus_id = cus
+        rental.ren_start = day_start
+        rental.ran_end = day_end
+        rental.total = total
+        rental.save()
+        car.status = 'disibled'
+        car.save()
+        del request.session['ren_start']
+        del request.session['ran_end']
+        url = reverse('rentalList')
+        return redirect(url)
+
+    context = {'cus': cus, 'car': car, 'ren_start': day_start, 'ran_end': day_end, 'day': day, 'total': total}
     return render(request, 'rent/rentalConfirm.html', context)
 
-# del save n del session()
+
+@login_required(login_url='login')
+def rentalList(request):
+    # customer
+    userId = request.session["userId"]
+    rental = RentalOrder.objects.filter(cus_id=userId).order_by('-ren_start')
+    context = {'rentals': rental}
+    return render(request, 'rent/rentalList.html', context)
+
+
+@login_required(login_url='login')
+def rentalListAll(request):
+    # employee
+    rental = RentalOrder.objects.all().order_by('id')
+    context = {'rentals': rental}
+    return render(request, 'rent/rentalListAll.html', context)
+
+
+@login_required(login_url='login')
+def rentalPayment(request, rent_id):
+    rental = get_object_or_404(RentalOrder, id=rent_id)
+    if request.method == 'POST':
+        form = rentalPaymentForm(rental_id=rent_id, data=request.POST, files=request.FILES)
+        if form.is_valid():
+            rental.status = 'ชำระเงินแล้ว'
+            rental.save()
+            form.save()
+            return redirect('rentalList')
+        else:
+            form = rentalPaymentForm(rental_id=rent_id)
+            context = {'rental': rental, 'form': form}
+            return render(request, 'rent/rentalPayment.html', context)
+    else:
+        form = rentalPaymentForm()
+        context = {'rental': rental, 'form': form}
+        return render(request, 'rent/rentalPayment.html', context)
+
+
+def rentalPaymentConfirm(request, rent_id):
+    rental = get_object_or_404(RentalOrder, id=rent_id)
+    rental_id = rental.id
+    rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
+
+    if request.method == 'POST':
+        rental.status = 'ยืนยันการชำระเงิน'
+        rental.save()
+        return redirect('rentalListAll')
+
+    context = {'rental': rental, 'rentalPayment': rentalPayment}
+    return render(request, 'rent/rentalPaymentConfirm.html', context)

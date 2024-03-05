@@ -126,15 +126,21 @@ class CustomerForm(forms.ModelForm):
             'address': 'ที่อยู่',
         }
 
-class RentalOrderForm(forms.ModelForm):
+class rentalPaymentForm(forms.ModelForm):
     class Meta:
-        model = RentalOrder
-        fields = ['ren_start', 'ran_end']
+        model = RentalPayment
+        fields = ['rental_id', 'bill']
         widgets = {
-            'ren_start': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
-            'ran_end': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'bill': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
         }
         labels = {
-            'ren_start': 'วันที่เริ่มเช่า',
-            'ran_end': 'เช่าถึงวันที่',
+            'bill': 'สลิปการโอน',
         }
+
+    def __init__(self, *args, **kwargs):
+        rental_id = kwargs.pop('rental_id', None)
+        super().__init__(*args, **kwargs)
+
+        if rental_id:
+            self.fields['rental_id'].initial = rental_id
+            self.fields['rental_id'].widget = forms.HiddenInput()

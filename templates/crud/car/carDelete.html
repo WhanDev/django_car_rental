@@ -8,14 +8,14 @@
             {{ form.as_p }}
             <p class="text-center">
                 <button type="button" class="btn btn-secondary" onclick="history.back()">
-                    <i class="fa fa-rotate-back"></i> Back
+                    <i class="fa fa-rotate-back"></i> ย้อนกลับ
                 </button>
                 {% if car.getCountOrder == 0 %}
                     <button type="submit" class="btn btn-danger" onclick="return confirm('โปรดยืนยันการลบรายการนี้')">
-                        <i class="fa-solid fa-trash"></i> Delete
+                        <i class="fa-solid fa-trash"></i> ลบ
                     </button>
                 {% else %}
-                    <button class="btn btn-lg btn-danger disabled">
+                    <button class="btn btn-danger disabled">
                         มีการเช่าแล้ว ไม่สามารถลบได้
                     </button>
                 {% endif %}

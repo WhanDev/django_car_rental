@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content_emp %}
-    <div>
+{% block content %}
+    <div class="mx-4">
         <h2 class="text-center mt-3 mb-2">เช่ารถ</h2>
         <div class="row">
             <h4>ข้อมูลรถ</h4>
@@ -26,14 +26,16 @@
             <label for="end_date">เช่าถึงวันที่:</label>
             <input type="date" id="end_date" name="end_date" class="form-control" required>
 
-            <p class="text-center">
+            <div class="text-center mt-3 mb-2">
                 <button type="button" class="btn btn-secondary" onclick="history.back()">
-                    <i class="fa fa-rotate-back"></i> ย้อนกลับ
+{#                    <i class="fa fa-rotate-back"></i>#}
+                    ย้อนกลับ
                 </button>
                 <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-floppy-disk"></i>ถัดไป
+{#                    <i class="fa-solid fa-floppy-disk"></i>#}
+                    ถัดไป
                 </button>
-            </p>
+            </div>
         </form>
     </div>
 {% endblock %}

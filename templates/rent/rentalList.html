@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="d-flex justify-content-center align-items-center mt-3 mb-2">
+        <h2 class="text-center mb-0">รายการเช่ารถ</h2>
+    </div>
+    <table class="table table-striped table-hover table-bordered">
+        <tr class="bg-white text-primary text-center">
+            <th class="col col-1">ระยะเวลา</th>
+            <th class="col col-1">ข้อมูลรถ</th>
+
+            <th class="col col-1">ยอดชำระ</th>
+            <th class="col col-1">สถานะ</th>
+        </tr>
+
+        {% for rental in rentals %}
+            <tr>
+                <td class="text-center">{{ rental.ren_start }} - {{ rental.ran_end }}</td>
+                <td class="text-center">{{ rental.car_id.brand.name }} {{ rental.car_id.model }}</td>
+                <td class="text-center">{{ rental.total }}</td>
+
+                {% if rental.status == 'รอการชำระเงิน' %}
+                    <td class="col col-1 text-center text-danger">{{ rental.status }}</td>
+                    <td class="col col-1 text-center">
+                        <a href="{% url 'rentalPayment' rental.id %}" class="btn btn-primary w-100">ชำระเงิน</a>
+                    </td>
+                {% else %}
+                    {% if rental.status == 'ชำระเงินแล้ว' %}
+                        <td class="col col-1 text-center text-warning">{{ rental.status }}</td>
+                        <td class=" col col-1 text-center">
+                            <button class="btn btn-secondary disabled">รอการยืนยัน</button>
+                        </td>
+                    {% endif %}
+                    {% if rental.status == 'ยืนยันการชำระเงิน' %}
+                        <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                        <td class=" col col-1 text-center">
+                            <button class="btn btn-success disabled">สามารถเข้ารับรถเช่าได้ <br/> กรุณาคืนรถตามกำหนด </button>
+                        </td>
+                    {% endif %}
+                    {% if rental.status == 'เข้ารับรถแล้ว' %}
+                        <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                        <td class=" col col-1 text-center">
+                            <button class="btn btn-success disabled">ขอบคุณที่ใช้บริการ <br/> กรุณาคืนรถตามกำหนด </button>
+                        </td>
+                    {% endif %}
+                {% endif %}
+
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}
