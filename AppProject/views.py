@@ -245,9 +245,64 @@ def customerList(request):
 
 
 @login_required(login_url='login')
-def customerUpdate(request, cus_id):
-    return render(request, 'crud/customer/customerUpdate.html')
+def customerUpdate(request):
+    if request.session.get('userStatus') == 'customer':
+        cus = get_object_or_404(Customer, cus_id=request.session.get('userId'))
+        if request.method == 'POST':
+            form = CustomerForm(request.POST, instance=cus)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.WARNING, "UPDATE SUCCESS")
+                return redirect('customerUpdate')
+            else:
+                context = {'form': form}
+                return render(request, 'crud/customer/customerUpdate.html', context)
+        else:
+            form = CustomerForm(instance=cus)
+            form.updateForm()
+            context = {'form': form, }
+            return render(request, 'crud/customer/customerUpdate.html', context)
+    else:
+        emp = get_object_or_404(Employ, em_id=request.session.get('userId'))
+        if request.method == 'POST':
+            form = EmployForm(request.POST or None, instance=emp)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.WARNING, "UPDATE SUCCESS")
+                return redirect('employeList')
+            else:
+                context = {'form': form}
+                return render(request, 'crud/employe/employeeUpdate.html', context)
+        else:
+            form = EmployForm(instance=emp)
+            form.updateForm()
+            context = {'form': form, }
+            return render(request, 'crud/employe/employeUpdate.html', context)
 
+@login_required(login_url='login')
+def customerChangePassword(request):
+    userName = request.session.get('userName')
+    userId = request.session.get('userId')
+    user = None
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST or None)
+        context = {'form': form}
+        u = authenticate(username=userName, password=request.POST['oldPassword'])
+        if u:
+            if request.POST['newPassword'] == request.POST['confirmPassword']:
+                u.set_password(request.POST['newPassword'])
+                u.save()
+                messages.add_message(request, messages.INFO, "เปลี่ยนรหัสผ่านเสร็จเรียบร้อย...")
+                return redirect('homebase')
+            else:
+                messages.add_message(request, messages.WARNING, "รหัสผ่านใหม่กับรหัสที่ยืนยันไม่ตรงกัน...")
+                return render(request, 'crud/customer/customerChangePassword.html', context)
+        else:
+            messages.add_message(request, messages.ERROR, "รหัสผ่านเดิมที่ระบุไม่ถูกต้อง...")
+            return render(request, 'crud/customer/customerChangePassword.html', context)
+    form = ChangePasswordForm(initial={'userId': userId})
+    context = {'form': form}
+    return render(request, 'crud/customer/customerChangePassword.html', context)
 
 @login_required(login_url='login')
 def customerDelete(request, cus_id):
@@ -298,6 +353,7 @@ def employeUpdate(request, em_id):
         form = EmployForm(request.POST or None, instance=emp)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.WARNING, "UPDATE SUCCESS")
             return redirect('employeList')
         else:
             context = {'form': form}
@@ -308,6 +364,30 @@ def employeUpdate(request, em_id):
         context = {'form': form, }
         return render(request, 'crud/employe/employeUpdate.html', context)
 
+
+def employeChangePassword(request):
+    userName = request.session.get('userName')
+    userId = request.session.get('userId')
+    user = None
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST or None)
+        context = {'form': form}
+        u = authenticate(username=userName, password=request.POST['oldPassword'])
+        if u:
+            if request.POST['newPassword'] == request.POST['confirmPassword']:
+                u.set_password(request.POST['newPassword'])
+                u.save()
+                messages.add_message(request, messages.INFO, "เปลี่ยนรหัสผ่านเสร็จเรียบร้อย...")
+                return redirect('homebase')
+            else:
+                messages.add_message(request, messages.WARNING, "รหัสผ่านใหม่กับรหัสที่ยืนยันไม่ตรงกัน...")
+                return render(request, 'crud/employe/employeChangePassword.html', context)
+        else:
+            messages.add_message(request, messages.ERROR, "รหัสผ่านเดิมที่ระบุไม่ถูกต้อง...")
+            return render(request, 'crud/employe/employeChangePassword.html', context)
+    form = ChangePasswordForm(initial={'userId': userId})
+    context = {'form': form}
+    return render(request, 'crud/employe/employeChangePassword.html', context)
 
 @login_required(login_url='login')
 def employeDelete(request, em_id):

@@ -39,12 +39,14 @@ urlpatterns = [
 
     path('customer/new', views.customerNew, name='customerNew'),
     path('customer/', views.customerList, name='customerList'),
-    path('customer/update<cus_id>', views.customerUpdate, name='customerUpdate'),
+    path('customer/update', views.customerUpdate, name='customerUpdate'),
+    path('customer/changePassword', views.customerChangePassword, name='customerChangePassword'),
     path('customer/delete<cus_id>', views.customerDelete, name='customerDelete'),
 
     path('employe/new', views.employeNew, name='employeNew'),
     path('employe/', views.employeList, name='employeList'),
     path('employe/update<em_id>', views.employeUpdate, name='employeUpdate'),
+    path('employe/changePassword', views.employeChangePassword, name='employeChangePassword'),
     path('employe/delete<em_id>', views.employeDelete, name='employeDelete'),
 
     path('rent/<em_id>/<car_id>', views.rentalOrder, name='rentalOrder'),
