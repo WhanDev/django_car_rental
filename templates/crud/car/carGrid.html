@@ -8,25 +8,28 @@
         <div class="row">
             {% for car in cars %}
                 <div class="col-sm-2 mb-2">
-                    <div class="card " style="border-radius: 15px">
-                        <img src="/{{ car.picture }}" class="card-img-top" alt="..." height="150px"
-                             style="border-radius: 15px">
-                        <div class="card-body">
-                            <h6 class="card-title">{{ car.model }} ({{ car.car_cc }} CC)</h6>
-                            <p class="card-text">{{ car.brand.name }}</p>
-                            {% if car.status == 'enable' %}
-                                <a href="{% url 'rentalOrder' car.car_id %}"
-                                   class="btn btn-primary w-100">เช่ารถ</a>
-                            {% else %}
-                                <button class="btn btn-danger disabled w-100">
-                                    ไม่พร้อมให้เช่า
-                                </button>
-                            {% endif %}
+                {% if car.status == 'enable' %}
+                    <div class="col-sm-2 mb-2">
+                        <div class="card " style="border-radius: 15px">
+                            <img src="/{{ car.picture }}" class="card-img-top" alt="..." height="150px"
+                                 style="border-radius: 15px">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ car.model }} ({{ car.car_cc }} CC)</h6>
+                                <p class="card-text">{{ car.brand.name }}</p>
+                                {% if car.status == 'enable' %}
+                                    <a href="{% url 'rentalOrder' car.car_id %}"
+                                       class="btn btn-primary w-100">เช่ารถ</a>
+                                {% else %}
+                                    <button class="btn btn-danger disabled w-100">
+                                        ไม่พร้อมให้เช่า
+                                    </button>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
             {% endfor %}
+            </div>
         </div>
-    </div>
 
 {% endblock %}
