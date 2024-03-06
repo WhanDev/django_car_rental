@@ -5,12 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 import os
-
 from django.urls import reverse
-
 from .forms import *
 from .models import *
 from django.contrib import messages
+import pandas as pd
+import plotly.express as px
 
 
 # Create your views here.
@@ -34,10 +34,22 @@ def home(request):
     return render(request, 'homepage.html')
 
 
+@login_required(login_url='login')
 def dashboard(request):
     if not chkPermission(request):
         return redirect('homebase')
-    return render(request, 'dashboard.html')
+    empAll = Employ.objects.all()
+    empCount = len(empAll)
+    cusAll = Customer.objects.all()
+    cusCount = len(cusAll)
+    carAll = Car.objects.all()
+    carCount = len(carAll)
+    brandAll = CarBarnd.objects.all()
+    brandCount = len(brandAll)
+
+    context = {'empCount': empCount, 'cusCount': cusCount
+               , 'carCount': carCount, 'brandCount': brandCount}
+    return render(request, 'dashboard.html', context)
 
 
 @login_required(login_url='login')
@@ -106,13 +118,13 @@ def user_login(request):
                 request.session['userId'] = user.cus_id
                 request.session['userName'] = user.username
                 request.session['userStatus'] = 'customer'
-                return render(request, 'homepage.html')
+                return redirect('homebase')
             else:
                 emp = Employ.objects.get(name=userName)
                 request.session['userId'] = emp.em_id
                 request.session['userName'] = emp.name
                 request.session['userStatus'] = emp.role
-                return render(request, 'dashboard.html')
+                return redirect('dashboard')
 
             messages.add_message(request, messages.INFO, "Login success..")
         else:
@@ -370,7 +382,7 @@ def employeUpdate(request, em_id):
         context = {'form': form, }
         return render(request, 'crud/employe/employeUpdate.html', context)
 
-
+@login_required(login_url='login')
 def employeChangePassword(request):
     userName = request.session.get('userName')
     userId = request.session.get('userId')
@@ -512,6 +524,7 @@ def rentalPayment(request, rent_id):
         return render(request, 'rent/rentalPayment.html', context)
 
 
+@login_required(login_url='login')
 def rentalPaymentConfirm(request, rent_id):
     rental = get_object_or_404(RentalOrder, id=rent_id)
     rental_id = rental.id
@@ -524,3 +537,4 @@ def rentalPaymentConfirm(request, rent_id):
 
     context = {'rental': rental, 'rentalPayment': rentalPayment}
     return render(request, 'rent/rentalPaymentConfirm.html', context)
+

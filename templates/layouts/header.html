@@ -19,9 +19,6 @@
 
         <div class="col col-4" align="right">
             {% if request.session.userId %}
-                <i class="fa-regular fa-user">
-
-                </i> Welcome : {{ request.session.userName|upper }}
                 <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-regular fa-user"></i>
                     Welcome : {{ request.session.userName|upper }}
@@ -35,21 +32,6 @@
                      {% endif %}
                     <li> <a href="{% url 'logout' %}" class="text-danger text-decoration-none dropdown-item"><i class="fa fa-sign-out-alt"></i> ออกจากระบบ </a></li>
                   </ul>
-
-{#                       <div class="row">#}
-{#                           <div class="col col-6 text-lg-start">#}
-{#                               {% if request.session.userStatus == 'customer' %}#}
-{#                                   <a href="{% url 'customerUpdate' request.session.userId %}"#}
-{#                                      class="text-lg-start text-secondary text-decoration-none">#}
-{#                                       <i class="fa fa-gear"></i> Update Profile</a>#}
-{#                               {% else %}#}
-{#                                   <a href="{% url 'userChangePassword' %}"#}
-{#                                      class="text-lg-start text-secondary text-decoration-none">#}
-{#                                       <i class="fa fa-gear"></i> Change Password</a>#}
-{#                               {% endif %}#}
-{#                           </div>#}
-                <a href="{% url 'logout' %}" class="text-lg-end text-danger text-decoration-none mx-3"><i class="fa fa-sign-out-alt"></i> Log out</a>
-
             {% else %}
                 <a href="{% url 'login' %}" class="text-lg-end text-success mx-3"><i class="mx-2 fa fa-sign-in-alt"></i>Log in</a>
             {% endif %}
