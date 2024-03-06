@@ -1,5 +1,5 @@
 from django.utils import timezone
-
+from django.db.models import F, Sum, Count
 from django.db import models
 
 class CarBarnd(models.Model):
@@ -89,6 +89,7 @@ class RentalOrder(models.Model):
     status = models.CharField(max_length=50, default="รอการชำระเงิน")
     total = models.FloatField(default=0.00)
     #ยกเลิกรายการเช่า
+
 
 class RentalPayment(models.Model):
     id = models.AutoField(primary_key=True)

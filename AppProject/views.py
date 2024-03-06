@@ -46,8 +46,28 @@ def dashboard(request):
     brandAll = CarBarnd.objects.all()
     brandCount = len(brandAll)
 
+    rentalAll = RentalOrder.objects.all().order_by('ren_start')
+    sales = {}
+    for rentTotal in rentalAll:
+        if rentTotal.status != 'ยกเลิกรายการเช่า':
+            preiod = str(rentTotal.ren_start.month) + "-" + str(rentTotal.ren_start.year)
+            if preiod in sales.keys():
+                sales[preiod] += rentTotal.total
+            else:
+                sales[preiod] = rentTotal.total
+
+    df_sale = pd.DataFrame({"Month_Year": sales.keys(), "Total": sales.values()}, columns=['Month_Year', 'Total'])
+
+    fig_bar = px.bar(df_sale, x='Month_Year', y='Total', title='กราฟพื้นที่แสดงยอดขายแยกตามเดือน-ปี')
+    fig_bar.update_layout(autosize=False, width=430, height=400,
+                           margin=dict(l=10, r=10, b=100, t=100, pad=5),
+                           paper_bgcolor="aliceblue", )
+    chart_bar = fig_bar.to_html()
+
     context = {'empCount': empCount, 'cusCount': cusCount
-               , 'carCount': carCount, 'brandCount': brandCount}
+               , 'carCount': carCount, 'brandCount': brandCount
+               , 'chartArea': chart_bar
+               , }
     return render(request, 'dashboard.html', context)
 
 
