@@ -139,7 +139,7 @@ def user_login(request):
                 request.session['userId'] = user.cus_id
                 request.session['userName'] = user.username
                 request.session['userStatus'] = 'customer'
-                return redirect('homebase')
+                return redirect('carGrid')
             else:
                 emp = Employ.objects.get(name=userName)
                 request.session['userId'] = emp.em_id
@@ -519,7 +519,7 @@ def rentalConfirm(request, car_id):
 def rentalList(request):
     # customer
     userId = request.session["userId"]
-    rental = RentalOrder.objects.filter(cus_id=userId).order_by('-ren_start')
+    rental = RentalOrder.objects.filter(cus_id=userId).order_by('-id')
     context = {'rentals': rental}
     return render(request, 'rent/rentalList.html', context)
 
@@ -529,7 +529,7 @@ def rentalListAll(request):
     if not chkPermission(request):
         return redirect('homebase')
     # employee
-    rental = RentalOrder.objects.all().order_by('id')
+    rental = RentalOrder.objects.all().order_by('-id')
     context = {'rentals': rental}
     return render(request, 'rent/rentalListAll.html', context)
 

@@ -6,60 +6,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="{% static 'stylesheets/bt502/css/bootstrap.css' %}">
-    <script src="{% static 'stylesheets/bt502/js/bootstrap.bundle.js'%}"></script>
+    <script src="{% static 'stylesheets/bt502/js/bootstrap.bundle.js' %}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid" style="font-family: Kanit; font-weight: normal; ">
+<div class="container-fluid" style="font-family: Kanit; font-weight: normal; ">
 
-        <div class="row">
-            <div class="col col-12 text-white" style="background-color: #253B59;">
-                {% include 'layouts/header.html' %}
-            </div>
+    <div class="row">
+        <div class="col col-12 text-white" style="background-color: #253B59;">
+            {% include 'layouts/header.html' %}
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col col-12" style="background-color: #f4f4f4;">{% for message in messages %}
+    <div class="row">
+        <div class="col col-12" style="background-color: #f4f4f4;">
+            {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible"
                      role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span>
                     </button>
-                    {{ message}}
+                    {{ message }}
                 </div>
             {% endfor %}
-                {% block content %}
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+    {% if request.session.userStatus == 'employee' %}
+        <div class="row h-100">
+            <div class="col col-2 text-white" style="background-color: #253B59;">
+                {% include 'layouts/navigationbars_employee.html' %}
+            </div>
+            <div class="col col-10">
+                {% block content_emp %}
 
                 {% endblock %}
             </div>
         </div>
+    {% endif %}
 
-        {% if request.session.userStatus == 'employee' %}
-            <div class="row">
-                <div class="col col-2 text-white" style="background-color: #253B59;">
-                    {% include 'layouts/navigationbars_employee.html' %}
-                </div>
-                <div class="col col-10">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible"
-                        role="alert">
-                        <button type="button" class="close" data-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ message}}
-                    </div>
-                {% endfor %}
-                    {% block content_emp %}
-
-                    {% endblock %}
-                </div>
-            </div>
-        {% endif %}
-
-    </div>
+</div>
 </body>
 </html>

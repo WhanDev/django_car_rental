@@ -4,15 +4,21 @@
     <div class="d-flex justify-content-center align-items-center mt-3 mb-2">
         <h2 class="text-center mb-0">รายการเช่ารถ</h2>
     </div>
-    <table class="table table-striped table-hover table-bordered">
-        <tr class="bg-white text-primary text-center">
+    <table class="table table-hover table-bordered rounded">
+        <tr class="bg-white text-dark text-center">
             <th class="col col-1">ระยะเวลา</th>
             <th class="col col-1">ข้อมูลรถ</th>
-
             <th class="col col-1">ยอดชำระ</th>
             <th class="col col-1">สถานะ</th>
+            <th class="col col-1">จัดการข้อมูล</th>
         </tr>
-
+        <tr class="">
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+        </tr>
         {% for rental in rentals %}
             <tr>
                 <td class="text-center">{{ rental.ren_start }} - {{ rental.ran_end }}</td>
@@ -22,9 +28,11 @@
                 {% if rental.status == 'รอการชำระเงิน' %}
                     <td class="col col-1 text-center text-danger">{{ rental.status }}</td>
                     <td class="col col-1 text-center">
-                        <a href="{% url 'rentalPayment' rental.id %}" class="btn btn-primary w-100 mb-2">ยืนยันการชำระเงิน</a>
-
-                        <a href="{% url 'rentalCancel' rental.id %}" class="btn btn-danger w-100">ยกเลิกรายการเช่า</a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'rentalPayment' rental.id %}" class="btn btn-primary w-100 me-1">ยืนยันการชำระเงิน</a>
+                            <a href="{% url 'rentalCancel' rental.id %}"
+                               class="btn btn-outline-danger w-100 ms-1" style="border-width: 2px">ยกเลิกรายการเช่า</a>
+                        </div>
                     </td>
                 {% endif %}
                 {% if rental.status == 'ยกเลิกรายการเช่า' %}
@@ -58,7 +66,6 @@
                     </td>
                 {% endif %}
             </tr>
-
         {% endfor %}
     </table>
 {% endblock %}

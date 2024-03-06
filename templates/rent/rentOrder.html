@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="mx-4">
-        <h2 class="text-center mt-3 mb-2">เช่ารถ</h2>
+        <h2 class="text-center mt-3 mb-2">รายการเช่ารถ</h2>
         <div class="row">
             <h4>ข้อมูลรถ</h4>
             <div class="col-2">
@@ -28,12 +28,12 @@
 
             <div class="text-center mt-3 mb-2">
                 <button type="button" class="btn btn-secondary" onclick="history.back()">
-{#                    <i class="fa fa-rotate-back"></i>#}
+                    <i class="fa-solid fa-arrow-left"></i>
                     ย้อนกลับ
                 </button>
-                <button type="submit" class="btn btn-success">
-{#                    <i class="fa-solid fa-floppy-disk"></i>#}
+                <button type="submit" class="btn btn-primary">
                     ถัดไป
+                    <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </form>

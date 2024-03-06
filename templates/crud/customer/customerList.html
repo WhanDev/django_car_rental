@@ -1,17 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-<h1 class="text-dark">Customer Listing</h1>
-        <table class="table table-striped table-hover table-bordered">
-            <tr class="bg-white text-dark text-center">
-                <th class="col col-2">Customer ID</th>
-                <th class="col col-3">USERNAME</th>
-                <th class="col col-3">ROLE</th>
-                <th class="col col-2">Manage <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> New </a></th>
-            </tr>
-            <tr class="bg-white text-primary text-center">
-                <td class="bg-white"></td>
-            </tr>
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+        <h2 class="text-center mb-0">รายชื่อลูกค้า</h2>
+{#        <a href="{% url '#' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a>#}
+        <a href="#" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a>
+    </div>
+    <table class="table table-striped table-hover table-bordered">
+        <tr class="bg-white text-dark text-center">
+            <th class="col col-2">รหัสลูกค้า</th>
+            <th class="col col-3">ชื่อผู้ใช้</th>
+            <th class="col col-3">สิทธิ์</th>
+            <th class="col col-2">จัดการข้อมูล</th>
+        </tr>
+        <tr class="bg-white text-primary text-center">
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+            <td class="bg-white"></td>
+        </tr>
 
         {% for customer in customers %}
             <tr>
@@ -24,5 +31,5 @@
                 </td>
             </tr>
         {% endfor %}
-        </table>
+    </table>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% load static %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col col-4 pt-2" >
+        <div class="col col-4 text-start" >
             <h1>
             {#    <img src="{% static 'images/dbt-head.png' %}" width="50px" height="50px">#}
                 <h4>CAR RENT KHONKAEN</h4>
@@ -16,12 +16,11 @@
                     {% endif %}
             {% endif %}
         </div>
-
-        <div class="col col-4" align="right">
+        <div class="col col-4 text-end ">
             {% if request.session.userId %}
                 <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-regular fa-user"></i>
-                    Welcome : {{ request.session.userName|upper }}
+                    {{ request.session.userName|upper }}
                 </button>
                   <ul class="dropdown-menu ">
                     <li> <a href="{% url 'customerUpdate'%}" class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-wrench"></i> แก้ไขข้อมูล </a></li>

@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-     <h1 class="text-dark my-2">รายชื่อพนักงาน</h1>
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+        <h2 class="text-center mb-0">รายชื่อพนักงาน</h2>
+        <a href="{% url 'employeNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a>
+    </div>
         <table class="table table-hover table-bordered rounded ">
             <tr class="bg-white text-dark text-center">
                 <th class="col col-2">รหัสพนักงาน</th>
-                <th class="col col-3">USERNAME</th>
+                <th class="col col-3">ชื่อผู้ใช้งาน</th>
                 <th class="col col-3">ตำแหน่ง</th>
-                <th class="col col-2">จัดการข้อมูล<a href="{% url 'employeNew' %}" class="btn btn-sm btn-primary mx-2"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a></th>
+                <th class="col col-2">จัดการข้อมูล</th>
             </tr>
             <tr class="">
                 <td class="bg-white"></td>
