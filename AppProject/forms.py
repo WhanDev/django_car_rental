@@ -2,6 +2,7 @@ from django import forms
 
 from .models import *
 
+
 class CarBrandForm(forms.ModelForm):
     class Meta:
         model = CarBarnd
@@ -126,29 +127,32 @@ class CustomerForm(forms.ModelForm):
             'address': 'ที่อยู่',
         }
 
-class rentalPaymentForm(forms.ModelForm):
     def updateForm(self):
         self.fields['cus_id'].widget.attrs['readonly'] = True
         self.fields['cus_id'].label = 'รหัสพนักงาน [ไม่อนุญาตให้แก้ไขได้]'
 
+
 class ChangePasswordForm(forms.Form):
     userId = forms.CharField(label='รหัสประจำตัวผู้ใช้', max_length=50,
-                             widget=forms.TextInput(attrs={'class':'form-control', 'readonly':True}))
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     oldPassword = forms.CharField(label='รหัสผ่านเดิม', max_length=100,
-                                  widget=forms.PasswordInput(attrs={'class':'form-control'}))
+                                  widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     newPassword = forms.CharField(label='รหัสผ่านใหม่', max_length=100,
-                                  widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    confirmPassword = forms.CharField(label='ยืนยันรหัสผ่านใหม่',  max_length=100,
-                                      widget=forms.PasswordInput(attrs={'class':'form-control'}))
+                                  widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    confirmPassword = forms.CharField(label='ยืนยันรหัสผ่านใหม่', max_length=100,
+                                      widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
 
 class ResetPasswordForm(forms.Form):
     userId = forms.CharField(label='รหัสประจำตัวผู้ใช้', max_length=50,
-                             widget=forms.TextInput(attrs={'class':'form-control', 'readonly':True}))
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     newPassword = forms.CharField(label='รหัสผ่านใหม่', max_length=100,
-                                  widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    confirmPassword = forms.CharField(label='ยืนยันรหัสผ่านใหม่',  max_length=100,
-                                      widget=forms.PasswordInput(attrs={'class':'form-control'}))
-class RentalOrderForm(forms.ModelForm):
+                                  widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    confirmPassword = forms.CharField(label='ยืนยันรหัสผ่านใหม่', max_length=100,
+                                      widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class rentalPaymentForm(forms.ModelForm):
     class Meta:
         model = RentalPayment
         fields = ['rental_id', 'bill']

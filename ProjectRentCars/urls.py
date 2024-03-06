@@ -51,8 +51,11 @@ urlpatterns = [
 
     path('rent/<car_id>', views.rentalOrder, name='rentalOrder'),
     path('rent/<str:car_id>/confirm/', views.rentalConfirm, name='rentalConfirm'),
+    path('rent/<rent_id>/cancel/', views.rentalCancel, name='rentalCancel'),
     path('rent/', views.rentalList, name='rentalList'),
     path('rentAll/', views.rentalListAll, name='rentalListAll'),
     path('rent/<rent_id>/payment', views.rentalPayment, name='rentalPayment'),
     path('rent/<rent_id>/paymentConfirm', views.rentalPaymentConfirm, name='rentalPaymentConfirm'),
+    path('rent/<rent_id>/serviceConfirm', views.rentalService, name='rentalService'),
+    path('rent/<rent_id>/returnConfirm', views.rentalReture, name='rentalReture'),
 ]

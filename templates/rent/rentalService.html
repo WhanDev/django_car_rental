@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block content_emp %}
+    <div class="mx-4">
+        <h2 class="text-center mt-3 mb-2">ยืนยันการรับรถเช่า</h2>
+        <div class="row">
+            <h4>ข้อมูลผู้เช่า</h4>
+            <div class="col-2">
+                <p>ชื่อ - นามสกุล:</p>
+                <p>ติดต่อ:</p>
+                <p>ที่อยู่:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ rental.cus_id.firstname }} {{ rental.cus_id.lastname }}</p>
+                <p>{{ rental.cus_id.tell }}</p>
+                <p>{{ rental.cus_id.address }}</p>
+            </div>
+
+            <h4>ข้อมูลรถ</h4>
+            <div class="col-2">
+                <p>ยี่ห้อรถ:</p>
+                <p>รุ่น:</p>
+                <p>ประเภทเกียร์:</p>
+                <p>ปริมาณ CC:</p>
+                <p>ระยะเวลาที่เช่า:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ rental.car_id.brand.name }}</p>
+                <p>{{ rental.car_id.model }}</p>
+                <p>{{ rental.car_id.gear }}</p>
+                <p>{{ rental.car_id.car_cc }}</p>
+                <p>{{ rental.ren_start }} ถึง {{ rental.ran_end }}</p>
+            </div>
+
+            <h4>ข้อมูลชำระเงิน</h4>
+            <div class="col-2">
+                <p>วัน/เวลาที่ชำระ:</p>
+            </div>
+            <div class="col-10">
+                {% for payment in rentalPayment %}
+                    <p>{{ payment.date_payment }}</p>
+                {% endfor %}
+            </div>
+
+            <h4>ข้อมูลรับรถเช่า</h4>
+            <div class="col-2">
+                <p>วัน/เวลาที่รับรถเช่า:</p>
+            </div>
+            <div class="col-10">
+                <p>{{ datetime }}</p>
+            </div>
+
+            <div class="row">
+                <h4 class="text-success text-end">ยอดชำระทั้งหมด: {{ rental.total|intcomma }}</h4>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="text-center mt-3 mb-2">
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fa fa-rotate-back"></i>
+                        ย้อนกลับ
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-floppy-disk"></i>
+                        ยืนยัน
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

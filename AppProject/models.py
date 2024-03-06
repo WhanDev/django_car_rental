@@ -1,8 +1,6 @@
 from django.utils import timezone
 
 from django.db import models
-from django.db.models import Count
-
 
 class CarBarnd(models.Model):
     id = models.AutoField(primary_key=True)
@@ -102,7 +100,7 @@ class RentalPayment(models.Model):
 class RentalService(models.Model):
     id = models.AutoField(primary_key=True)
     rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
-    date_servic = models.DateTimeField(default=timezone.now)
+    date_service = models.DateTimeField(default=timezone.now)
     #รับรถไปใช้งานแล้ว
 
 class RentalReture(models.Model):
