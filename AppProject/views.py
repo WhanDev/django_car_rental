@@ -47,27 +47,35 @@ def dashboard(request):
     brandCount = len(brandAll)
 
     rentalAll = RentalOrder.objects.all().order_by('ren_start')
+    rentalCountConfirm = 0
+    rentalCountAll = len(rentalAll)
+    rentalCountCancel = 0
     sales = {}
     for rentTotal in rentalAll:
         if rentTotal.status != 'ยกเลิกรายการเช่า':
             preiod = str(rentTotal.ren_start.month) + "-" + str(rentTotal.ren_start.year)
+            rentalCountConfirm += 1
             if preiod in sales.keys():
                 sales[preiod] += rentTotal.total
             else:
                 sales[preiod] = rentTotal.total
+        else:
+            rentalCountCancel += 1
 
     df_sale = pd.DataFrame({"Month_Year": sales.keys(), "Total": sales.values()}, columns=['Month_Year', 'Total'])
 
-    fig_bar = px.bar(df_sale, x='Month_Year', y='Total', title='กราฟพื้นที่แสดงยอดขายแยกตามเดือน-ปี')
-    fig_bar.update_layout(autosize=False, width=430, height=400,
+    fig_bar = px.bar(df_sale, x='Month_Year', y='Total', title='กราฟพื้นที่แสดงยอดการเช่าแยกตามเดือน-ปี')
+    fig_bar.update_layout(autosize=False, width=640, height=470,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
-                           paper_bgcolor="aliceblue", )
+                           paper_bgcolor="#D7E4F8",
+
+                          )
     chart_bar = fig_bar.to_html()
 
     context = {'empCount': empCount, 'cusCount': cusCount
                , 'carCount': carCount, 'brandCount': brandCount
-               , 'chartArea': chart_bar
-               , }
+               , 'chartBar': chart_bar, 'rentalCountConfirm': rentalCountConfirm
+               , 'rentalCountCancel': rentalCountCancel, 'rentalCountAll': rentalCountAll}
     return render(request, 'dashboard.html', context)
 
 
