@@ -1,27 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1 class="text-center">
-        ข้อมูลรถ
-    </h1>
-    <div class="flex p-3">
-        <div class="row">
-            {% for car in cars %}
-                {% if car.status == 'enable' %}
-                    <div class="col-sm-2 mb-2 ">
-                        <div class="card " style="border-radius: 15px">
-                            <img src="/{{ car.picture }}" class="card-img-top" alt="..." height="150px"
-                                 width="150px" style="border-radius: 15px">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ car.model }} ({{ car.car_cc }} CC)</h6>
-                                <p class="card-text">{{ car.brand.name }}</p>
+    <div class="row mt-3" style="background-color: white; border-radius: 20px">
+        <h1 class="text-center">
+            ข้อมูลรถ
+        </h1>
+        <div class="flex p-3">
+            <div class="row">
+                {% for car in cars %}
+                    {% if car.status == 'enable' %}
+                        <div class="col-sm-2 mb-2 ">
+                            <div class="card " style="border-radius: 15px">
+                                <img src="/{{ car.picture }}" class="card-img-top" alt="..." height="150px"
+                                     width="150px" style="border-radius: 15px">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ car.model }} ({{ car.car_cc }} CC)</h6>
+                                    <p class="card-text">{{ car.brand.name }}</p>
                                     <a href="{% url 'rentalOrder' car.car_id %}"
                                        class="btn btn-primary w-100">เช่ารถ</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
-    <div>
+    </div>
+
 {% endblock %}

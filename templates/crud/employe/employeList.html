@@ -1,34 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
-        <h2 class="text-center mb-0">รายชื่อพนักงาน</h2>
-        <a href="{% url 'employeNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a>
-    </div>
-        <table class="table table-hover table-bordered rounded ">
-            <tr class="bg-white text-dark text-center">
-                <th class="col col-2">รหัสพนักงาน</th>
-                <th class="col col-3">ชื่อผู้ใช้งาน</th>
-                <th class="col col-3">ตำแหน่ง</th>
-                <th class="col col-2">จัดการข้อมูล</th>
-            </tr>
-            <tr class="">
-                <td class="bg-white"></td>
-                <td class="bg-white"></td>
-                <td class="bg-white"></td>
-                <td class="bg-white"></td>
-            </tr>
+    <div class="p-3 mt-3" style="background-color: white; border-radius: 20px">
+        <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+            <h2 class="text-center mb-0">รายชื่อพนักงาน</h2>
+            <a href="{% url 'employeNew' %}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> เพิ่มข้อมูล </a>
+        </div>
+            <table class="table table-hover table-bordered rounded ">
+                <tr class="bg-white text-dark text-center">
+                    <th class="col col-2">รหัสพนักงาน</th>
+                    <th class="col col-3">ชื่อผู้ใช้งาน</th>
+                    <th class="col col-3">ตำแหน่ง</th>
+                    <th class="col col-2">จัดการข้อมูล</th>
+                </tr>
+                <tr class="">
+                    <td class="bg-white"></td>
+                    <td class="bg-white"></td>
+                    <td class="bg-white"></td>
+                    <td class="bg-white"></td>
+                </tr>
 
-        {% for employee in employees %}
-            <tr>
-                <td class="text-center">{{ employee.em_id }}</td>
-                <td class="text-center">{{ employee.name|upper }}</td>
-                <td class="text-center">{{ employee.role|upper }}</td>
-                <td class="text-lg-center">
-                    <a href="{% url 'employeUpdate' employee.em_id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
-                    <a href="{% url 'employeDelete' employee.em_id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </table>
+            {% for employee in employees %}
+                <tr>
+                    <td class="text-center">{{ employee.em_id }}</td>
+                    <td class="text-center">{{ employee.name|upper }}</td>
+                    <td class="text-center">{{ employee.role|upper }}</td>
+                    <td class="text-lg-center">
+                        <a href="{% url 'employeUpdate' employee.em_id %}" class="btn btn-secondary"> <i class="fa fa-tools"> </i> </a>
+                        <a href="{% url 'employeDelete' employee.em_id %}" class="btn btn-danger"> <i class="fa fa-trash"> </i> </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+    </div>
 {% endblock %}
