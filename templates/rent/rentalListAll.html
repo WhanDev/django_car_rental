@@ -8,7 +8,7 @@
         <tr class="bg-white text-primary text-center">
             <th class="col col-1">ระยะเวลา</th>
             <th class="col col-1">ข้อมูลรถ</th>
-<th class="col col-1">ข้อมูลผู้เช่า</th>
+            <th class="col col-1">ข้อมูลผู้เช่า</th>
             <th class="col col-1">ยอดชำระ</th>
             <th class="col col-1">สถานะ</th>
         </tr>
@@ -24,18 +24,39 @@
                     <td class="col col-1 text-center">
                         <button class="btn btn-secondary w-100 disabled">ชำระเงิน</button>
                     </td>
-                {% else %}
-                    {% if rental.status == 'ชำระเงินแล้ว' %}
-                        <td class="col col-1 text-center text-success">{{ rental.status }}</td>
-                        <td class=" col col-1 text-center">
-                            <a href="{% url 'rentalPaymentConfirm' rental.id %}" type="submit" class="btn btn-primary w-100 ">รอการยืนยัน</a>
-                        </td>
-                    {% endif %}{% if rental.status == 'ยืนยันการชำระเงิน' %}
-                        <td class="col col-1 text-center text-success">{{ rental.status }}</td>
-                        <td class=" col col-1 text-center">
-                            <a href="{% url 'rentalPaymentConfirm' rental.id %}" type="submit" class="btn btn-primary w-100 ">ยืนยันการรับรถเช่า</a>
-                        </td>
-                    {% endif %}
+                {% endif %}
+                {% if rental.status == 'ยกเลิกรายการเช่า' %}
+                    <td class="col col-1 text-center text-danger">{{ rental.status }}</td>
+                    <td class=" col col-1 text-center">
+                        <button class="btn btn-danger disabled">ยกเลิกรายการเช่า</button>
+                    </td>
+                {% endif %}
+                {% if rental.status == 'ชำระเงินแล้ว' %}
+                    <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                    <td class=" col col-1 text-center">
+                        <a href="{% url 'rentalPaymentConfirm' rental.id %}" type="submit"
+                           class="btn btn-primary w-100 ">รอการยืนยัน</a>
+                    </td>
+                {% endif %}
+                {% if rental.status == 'ยืนยันการชำระเงิน' %}
+                    <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                    <td class=" col col-1 text-center">
+                        <a href="{% url 'rentalService' rental.id %}" type="submit"
+                           class="btn btn-primary w-100 ">ยืนยันการรับรถเช่า</a>
+                    </td>
+                {% endif %}
+                {% if rental.status == 'ยืนยันการรับรถเช่า' %}
+                    <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                    <td class=" col col-1 text-center">
+                        <a href="{% url 'rentalReture' rental.id %}" type="submit"
+                           class="btn btn-primary w-100 ">ยืนยันการคืนรถเช่า</a>
+                    </td>
+                {% endif %}
+                {% if rental.status == 'ยืนยันการคืนรถเช่า' %}
+                    <td class="col col-1 text-center text-success">{{ rental.status }}</td>
+                    <td class=" col col-1 text-center">
+                        <button class="btn btn-success disabled">การเช่าเสร็จสิ้น</button>
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}

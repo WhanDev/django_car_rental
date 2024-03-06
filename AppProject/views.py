@@ -13,7 +13,6 @@ import pandas as pd
 import plotly.express as px
 
 
-# Create your views here.
 def chkPermission(request):
     if 'userStatus' in request.session:
         userStatus = request.session['userStatus']
@@ -68,6 +67,8 @@ def brandNew(request):
 
 
 def brandList(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     brand = CarBarnd.objects.all().order_by('id')
     context = {'brand': brand}
     return render(request, 'crud/brand/brandList.html', context)
@@ -171,6 +172,8 @@ def carNew(request):
 
 # @login_required(login_url='login')
 def carList(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
@@ -297,6 +300,7 @@ def customerUpdate(request):
             context = {'form': form, }
             return render(request, 'crud/employe/employeUpdate.html', context)
 
+
 @login_required(login_url='login')
 def customerChangePassword(request):
     userName = request.session.get('userName')
@@ -321,6 +325,7 @@ def customerChangePassword(request):
     form = ChangePasswordForm(initial={'userId': userId})
     context = {'form': form}
     return render(request, 'crud/customer/customerChangePassword.html', context)
+
 
 @login_required(login_url='login')
 def customerDelete(request, cus_id):
@@ -384,6 +389,8 @@ def employeUpdate(request, em_id):
 
 @login_required(login_url='login')
 def employeChangePassword(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     userName = request.session.get('userName')
     userId = request.session.get('userId')
     user = None
@@ -406,6 +413,7 @@ def employeChangePassword(request):
     form = ChangePasswordForm(initial={'userId': userId})
     context = {'form': form}
     return render(request, 'crud/employe/employeChangePassword.html', context)
+
 
 @login_required(login_url='login')
 def employeDelete(request, em_id):
@@ -498,6 +506,8 @@ def rentalList(request):
 
 @login_required(login_url='login')
 def rentalListAll(request):
+    if not chkPermission(request):
+        return redirect('homebase')
     # employee
     rental = RentalOrder.objects.all().order_by('id')
     context = {'rentals': rental}
@@ -508,24 +518,37 @@ def rentalListAll(request):
 def rentalPayment(request, rent_id):
     rental = get_object_or_404(RentalOrder, id=rent_id)
     if request.method == 'POST':
-        form = rentalPaymentForm(rental_id=rent_id, data=request.POST, files=request.FILES)
+        form = rentalPaymentForm(rental_id=rental.id, data=request.POST, files=request.FILES)
+
         if form.is_valid():
             rental.status = 'ชำระเงินแล้ว'
             rental.save()
             form.save()
             return redirect('rentalList')
-        else:
-            form = rentalPaymentForm(rental_id=rent_id)
-            context = {'rental': rental, 'form': form}
-            return render(request, 'rent/rentalPayment.html', context)
     else:
-        form = rentalPaymentForm()
-        context = {'rental': rental, 'form': form}
-        return render(request, 'rent/rentalPayment.html', context)
+        form = rentalPaymentForm(rental_id=rental.id)
+
+    context = {'rental': rental, 'form': form}
+    return render(request, 'rent/rentalPayment.html', context)
+
+
+def rentalCancel(request, rent_id):
+    rental = get_object_or_404(RentalOrder, id=rent_id)
+    car_id = rental.car_id.car_id
+    if request.method == 'POST':
+        rental.status = 'ยกเลิกรายการเช่า'
+        Car.objects.filter(car_id=car_id).update(status='enable')
+        rental.save()
+        return redirect('rentalList')
+
+    context = {'rental': rental, }
+    return render(request, 'rent/rentalCancel.html', context)
 
 
 @login_required(login_url='login')
 def rentalPaymentConfirm(request, rent_id):
+    if not chkPermission(request):
+        return redirect('homebase')
     rental = get_object_or_404(RentalOrder, id=rent_id)
     rental_id = rental.id
     rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
@@ -538,3 +561,44 @@ def rentalPaymentConfirm(request, rent_id):
     context = {'rental': rental, 'rentalPayment': rentalPayment}
     return render(request, 'rent/rentalPaymentConfirm.html', context)
 
+def rentalService(request, rent_id):
+    if not chkPermission(request):
+        return redirect('homebase')
+    rental = get_object_or_404(RentalOrder, id=rent_id)
+    rental_id = rental.id
+    rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
+    datetime = timezone.now()
+    if request.method == 'POST':
+        service = RentalService()
+        service.rental_id = rental
+        service.save()
+        rental.status = 'ยืนยันการรับรถเช่า'
+        rental.save()
+        return redirect('rentalListAll')
+
+    context = {'rental': rental, 'rentalPayment': rentalPayment, 'datetime': datetime}
+    return render(request, 'rent/rentalService.html', context)
+
+
+def rentalReture(request, rent_id):
+    if not chkPermission(request):
+        return redirect('homebase')
+    rental = get_object_or_404(RentalOrder, id=rent_id)
+    rental_id = rental.id
+    car_id = rental.car_id.car_id
+    rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
+    rentalService = RentalService.objects.filter(rental_id=rental_id)
+    car = Car.objects.get(car_id=car_id)
+    datetime = timezone.now()
+    if request.method == 'POST':
+        rentelReture = RentalReture()
+        rentelReture.rental_id = rental
+        rentelReture.save()
+        rental.status = 'ยืนยันการคืนรถเช่า'
+        rental.save()
+        car.status = 'enable'
+        car.save()
+        return redirect('rentalListAll')
+
+    context = {'rental': rental, 'rentalPayment': rentalPayment, 'rentalService': rentalService, 'datetime': datetime}
+    return render(request, 'rent/rentalReture.html', context)
