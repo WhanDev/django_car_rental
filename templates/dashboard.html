@@ -4,54 +4,99 @@
     <h1 class="text-center">
         DASHBOARD
     </h1>
-    <div class="row text-center">
-        <div class="col-3 mx-auto">
-                <div class="card border-primary bg-primary text-white">
-                  <div class="card-header text-start " style="font-size: 18px">จำนวนพนักงาน</div>
-                  <div class="card-body">
-                    <h5 class="card-title text-white " style="font-size: 28px">{{ empCount }}</h5>
-                  </div>
+    <div class="container-fluid p-2" style="background-color: #FFFEF5; border-radius: 20px">
+        <div class="row rounded-3">
+            <div class="col-3 rounded-3 p-2 mx-auto">
+                <div class="card text-dark" style="border-radius: 20px;">
+                    <div class="card-header text-start text-white"
+                         style="font-size: 18px; background-color: #ffbe0b; border-radius: 20px">จำนวนพนักงาน
+                    </div>
+                    <div class="card-body text-end">
+                        <h5 class="card-title text-dark " style="font-size: 28px">{{ empCount }}&nbsp&nbspคน</h5>
+                    </div>
                 </div>
+            </div>
+            <div class="col-3 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px; ">
+                    <div class="card-header text-start "
+                         style="font-size: 18px; background-color: #ffbe0b; border-radius: 20px">จำนวนลูกค้า
+                    </div>
+                    <div class="card-body text-end">
+                        <h5 class="card-title text-dark " style="font-size: 28px">{{ cusCount }}&nbsp&nbspคน</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px">
+                    <div class="card-header text-start "
+                         style="font-size: 18px; background-color: #ff006e; border-radius: 20px ">จำนวนรถ
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark text-end"
+                            style="font-size: 28px">{{ carCount }}&nbsp;&nbsp;คัน</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px">
+                    <div class="card-header text-start "
+                         style="font-size: 18px; background-color: #ff006e; border-radius: 20px">จำนวนยี่ห้อรถ
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark text-end " style="font-size: 28px">{{ brandCount }}&nbsp;&nbsp;ยี่ห้อ</h5>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-3 mx-auto">
-                <div class="card border-primary bg-primary text-white">
-                  <div class="card-header text-start " style="font-size: 18px">จำนวนลูกค้า</div>
-                  <div class="card-body">
-                    <h5 class="card-title text-white " style="font-size: 28px">{{ cusCount }}</h5>
-                  </div>
+        <div class="row rounded-3 mt-3">
+            <div class="col-4 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px">
+                    <div class="card-header text-start"
+                         style="font-size: 18px; background-color: #8338EC; border-radius: 20px">จำนวนออเดอร์ทั้งหมด
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark text-end" style="font-size: 28px">{{ rentalCountAll }}&nbsp;&nbsp;รายการ</h5>
+                    </div>
                 </div>
+            </div>
+
+            <div class="col-4 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px">
+                    <div class="card-header text-start"
+                         style="font-size: 18px; background-color: #8338EC; border-radius: 20px">
+                        จำนวนออเดอร์ที่ถูกยืนยัน
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark text-end" style="font-size: 28px">{{ rentalCountConfirm }}&nbsp;&nbsp;รายการ</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4 rounded-3 p-2 mx-auto">
+                <div class="card text-white" style="border-radius: 20px">
+                    <div class="card-header text-start"
+                         style="font-size: 18px; background-color: #8338EC; border-radius: 20px">
+                        จำนวนออเดอร์ที่ถูกยกเลิก
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark text-end" style="font-size: 28px">{{ rentalCountCancel }}&nbsp;&nbsp;รายการ</h5>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-3 mx-auto">
-                <div class="card border-primary bg-primary text-white">
-                  <div class="card-header text-start " style="font-size: 18px">จำนวนรถ</div>
-                  <div class="card-body">
-                    <h5 class="card-title text-white " style="font-size: 28px">{{ carCount }}</h5>
-                  </div>
-                </div>
+        <div class="row mt-4 mb-4 p-3 m-1" style="border-radius: 20px; background-color: #FEFDFF">
+            <div class="col-3">
         </div>
-
-        <div class="col-3 mx-auto">
-                <div class="card border-primary bg-primary text-white">
-                  <div class="card-header text-start " style="font-size: 18px">จำนวนแบรนด์</div>
-                  <div class="card-body">
-                    <h5 class="card-title text-white " style="font-size: 28px">{{ brandCount }}</h5>
-                  </div>
-                </div>
+            <div class="col-1">
+                {{ chartBar | safe }}
+            </div>
         </div>
     </div>
 
-    <div class="row text-center">
-        <div class="col-md-5">
-            {{ chartLine | safe }}
-        </div>
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-5">
-            {{ chartArea | safe }}
-        </div>
-    </div>
 
-    {{ test }}
+
 {% endblock %}
