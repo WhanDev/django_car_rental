@@ -12,6 +12,7 @@
                 <p>ประเภทเกียร์:</p>
                 <p>ปริมาณ CC:</p>
                 <p>ระยะเวลาที่เช่า:</p>
+                <p>เลขบัญชี:</p>
             </div>
             <div class="col-10">
                 <p>{{ rental.car_id.brand.name }}</p>
@@ -19,6 +20,9 @@
                 <p>{{ rental.car_id.gear }}</p>
                 <p>{{ rental.car_id.car_cc }}</p>
                 <p>{{ rental.ren_start }} ถึง {{ rental.ran_end }}</p>
+                <p>032-3560676</p>
+                <p>กสิกรไทย</p>
+                <p>นาย ชัยอนันต์ สิมาชัย</p>
             </div>
             <div class="row">
                 <h4 class="text-success text-end">ยอดชำระทั้งหมด: {{ rental.total|intcomma }}</h4>

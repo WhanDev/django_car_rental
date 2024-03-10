@@ -1,38 +1,46 @@
 {% load static %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col col-4 text-start" >
+        <div class="col col-4 text-start">
             <h1>
-            {#    <img src="{% static 'images/dbt-head.png' %}" width="50px" height="50px">#}
-                <h4>CAR RENT KHONKAEN</h4>
+                {#                <img src="{% static 'images/dbt-head.png' %}" width="50px" height="50px">#}
+                <h4>ระบบเช่ารถ</h4>
             </h1>
         </div>
         <div class="col col-4">
             {% if request.session.userId is None %}
                 {% include 'layouts/navigationbars_customer.html' %}
             {% else %}
-                    {% if request.session.userStatus == 'customer' %}
-                        {% include 'layouts/navigationbars_customer.html' %}
-                    {% endif %}
+                {% if request.session.userStatus == 'customer' %}
+                    {% include 'layouts/navigationbars_customer.html' %}
+                {% endif %}
             {% endif %}
         </div>
-        <div class="col col-4 text-end ">
+        <div class="col col-4 text-end mt-2">
             {% if request.session.userId %}
-                <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     <i class="fa-regular fa-user"></i>
                     {{ request.session.userName|upper }}
                 </button>
-                  <ul class="dropdown-menu ">
-                    <li> <a href="{% url 'customerUpdate'%}" class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-wrench"></i> แก้ไขข้อมูล </a></li>
-                     {% if request.session.userStatus == 'customer' %}
-                        <li> <a href="{% url 'customerChangePassword'%}" class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-key"></i> เปลี่ยนรหัสผ่าน </a></li>
-                     {% else %}
-                         <li> <a href="{% url 'employeChangePassword'%}" class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-key"></i> เปลี่ยนรหัสผ่าน </a></li>
-                     {% endif %}
-                    <li> <a href="{% url 'logout' %}" class="text-danger text-decoration-none dropdown-item"><i class="fa fa-sign-out-alt"></i> ออกจากระบบ </a></li>
-                  </ul>
+                <ul class="dropdown-menu ">
+                    <li><a href="{% url 'customerUpdate' %}" class="text-dark text-decoration-none dropdown-item"><i
+                            class="fa-solid fa-wrench"></i> แก้ไขข้อมูล </a></li>
+                    {% if request.session.userStatus == 'customer' %}
+                        <li><a href="{% url 'customerChangePassword' %}"
+                               class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-key"></i>
+                            เปลี่ยนรหัสผ่าน </a></li>
+                    {% else %}
+                        <li><a href="{% url 'employeChangePassword' %}"
+                               class="text-dark text-decoration-none dropdown-item"><i class="fa-solid fa-key"></i>
+                            เปลี่ยนรหัสผ่าน </a></li>
+                    {% endif %}
+                    <li><a href="{% url 'logout' %}" class="text-danger text-decoration-none dropdown-item"><i
+                            class="fa fa-sign-out-alt"></i> ออกจากระบบ </a></li>
+                </ul>
             {% else %}
-                <a href="{% url 'login' %}" class="text-lg-end text-success mx-3"><i class="mx-2 fa fa-sign-in-alt"></i>Log in</a>
+                <a href="{% url 'customerNew' %}" class="text-lg-end text-white"><i class="fa-solid fa-user-plus mx-2"></i>สมัครสมาชิก</a>
+                <a href="{% url 'login' %}" class="text-lg-end text-white mx-1"><i class="mx-2 fa fa-sign-in-alt"></i>เข้าสู่ระบบ</a>
             {% endif %}
         </div>
     </div>

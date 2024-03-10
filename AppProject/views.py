@@ -36,7 +36,7 @@ def home(request):
 @login_required(login_url='login')
 def dashboard(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     empAll = Employ.objects.all()
     empCount = len(empAll)
     cusAll = Customer.objects.all()
@@ -68,7 +68,6 @@ def dashboard(request):
     fig_bar.update_layout(autosize=False, width=640, height=470,
                            margin=dict(l=10, r=10, b=100, t=100, pad=5),
                            paper_bgcolor="#D7E4F8",
-
                           )
     chart_bar = fig_bar.to_html()
 
@@ -82,7 +81,7 @@ def dashboard(request):
 @login_required(login_url='login')
 def brandNew(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     if request.method == 'POST':
         form = CarBrandForm(request.POST)
         if form.is_valid():
@@ -93,7 +92,7 @@ def brandNew(request):
         context = {'form': form}
         return render(request, 'crud/brand/brandNew.html', context)
 
-
+@login_required(login_url='login')
 def brandList(request):
     if not chkPermission(request):
         return redirect('homebase')
@@ -165,13 +164,14 @@ def user_login(request):
         return render(request, 'authention/login.html', data)
 
 
+@login_required(login_url='login')
 def user_logout(request):
     if request.session.get('userId'):
         del request.session["userId"]
         del request.session["userName"]
         del request.session["userStatus"]
         logout(request)
-        return redirect('homebase')
+        return redirect('carGrid')
     else:
         return redirect('login')
 
@@ -179,7 +179,7 @@ def user_logout(request):
 @login_required(login_url='login')
 def carNew(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     if request.method == 'POST':
         form = CarForm(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -198,10 +198,10 @@ def carNew(request):
         return render(request, 'crud/car/carNew.html', context)
 
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def carList(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     cars = Car.objects.all().order_by('car_id')
     context = {'cars': cars}
     return render(request, 'crud/car/carList.html', context)
@@ -216,7 +216,7 @@ def carGrid(request):
 @login_required(login_url='login')
 def carUpdate(request, car_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
     form = CarForm(request.POST or None, request.FILES or None, instance=car)
@@ -237,7 +237,7 @@ def carUpdate(request, car_id):
 @login_required(login_url='login')
 def carDelete(request, car_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     car = get_object_or_404(Car, car_id=car_id)
     picture = car.picture.name
     if request.method == 'POST':
@@ -270,7 +270,7 @@ def customerNew(request):
                 user.is_staff = False
                 user.save()
                 messages.add_message(request, messages.WARNING, "REGISTER SUCCESS")
-                return redirect('homebase')
+                return redirect('carGrid')
             else:
                 messages.add_message(request, messages.WARNING, "รหัสผ่านกับรหัสผ่านที่ยืนยันไม่ตรงกัน...")
                 context = {'form': form}
@@ -285,9 +285,10 @@ def customerNew(request):
         return render(request, 'crud/customer/customerNew.html', context)
 
 
+@login_required(login_url='login')
 def customerList(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     customers = Customer.objects.all().order_by('cus_id')
     context = {'customers': customers}
     return render(request, 'crud/customer/customerList.html', context)
@@ -343,7 +344,7 @@ def customerChangePassword(request):
                 u.set_password(request.POST['newPassword'])
                 u.save()
                 messages.add_message(request, messages.INFO, "เปลี่ยนรหัสผ่านเสร็จเรียบร้อย...")
-                return redirect('homebase')
+                return redirect('carGrid')
             else:
                 messages.add_message(request, messages.WARNING, "รหัสผ่านใหม่กับรหัสที่ยืนยันไม่ตรงกัน...")
                 return render(request, 'crud/customer/customerChangePassword.html', context)
@@ -363,7 +364,7 @@ def customerDelete(request, cus_id):
 @login_required(login_url='login')
 def employeNew(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     if request.method == 'POST':
         form = EmployForm(request.POST)
         if form.is_valid():
@@ -446,7 +447,7 @@ def employeChangePassword(request):
 @login_required(login_url='login')
 def employeDelete(request, em_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     emp = get_object_or_404(Employ, em_id=em_id)
     if request.method == 'POST':
         emp.delete()
@@ -536,7 +537,7 @@ def rentalList(request):
 @login_required(login_url='login')
 def rentalListAll(request):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     # employee
     rental = RentalOrder.objects.all().order_by('-id')
     context = {'rentals': rental}
@@ -548,7 +549,6 @@ def rentalPayment(request, rent_id):
     rental = get_object_or_404(RentalOrder, id=rent_id)
     if request.method == 'POST':
         form = rentalPaymentForm(rental_id=rental.id, data=request.POST, files=request.FILES)
-
         if form.is_valid():
             rental.status = 'ชำระเงินแล้ว'
             rental.save()
@@ -579,7 +579,7 @@ def rentalCancel(request, rent_id):
 @login_required(login_url='login')
 def rentalPaymentConfirm(request, rent_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     rental = get_object_or_404(RentalOrder, id=rent_id)
     rental_id = rental.id
     rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
@@ -595,7 +595,7 @@ def rentalPaymentConfirm(request, rent_id):
 
 def rentalService(request, rent_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     rental = get_object_or_404(RentalOrder, id=rent_id)
     rental_id = rental.id
     rentalPayment = RentalPayment.objects.filter(rental_id=rental_id)
@@ -615,7 +615,7 @@ def rentalService(request, rent_id):
 
 def rentalReture(request, rent_id):
     if not chkPermission(request):
-        return redirect('homebase')
+        return redirect('carGrid')
     rental = get_object_or_404(RentalOrder, id=rent_id)
     rental_id = rental.id
     car_id = rental.car_id.car_id

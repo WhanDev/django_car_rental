@@ -1,6 +1,6 @@
 <hr class="text-white border border-2 ">
 <div class="list-group mt-2 ">
-    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action "><i class="fa-solid fa-chart-line me-2"></i>DASHBOARD</a>
+    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action "><i class="fa-solid fa-chart-line me-2"></i>แดชบอร์ด</a>
     {% if request.session.userStatus == 'employee' %}
         <a href="{% url 'employeList' %}" class="list-group-item list-group-item-action "><i class="fa-solid fa-users me-2"></i>รายชื่อพนักงาน</a>
         <a href="{% url 'customerList' %}" class="list-group-item list-group-item-action "><i class="fa-regular fa-circle-user me-2"></i></i>รายชื่อลูกค้า</a>

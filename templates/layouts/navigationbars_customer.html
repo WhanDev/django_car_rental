@@ -1,5 +1,5 @@
 <div class="text-center my-2">
-    <a href="{% url 'carGrid' %}" class="text-white text-decoration-none mx-2">รถให้เช่า</a>
+<a href="{% url 'carGrid' %}" class="text-white text-decoration-none mx-2">รถให้เช่า</a>
     {% if request.session.userStatus == 'customer' %}
         <a href="{% url 'rentalList' %}" class="text-white text-decoration-none mx-2">รายการเช่า-ยืมรถ</a>
     {% endif %}

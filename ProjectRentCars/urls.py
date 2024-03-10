@@ -20,7 +20,7 @@ from AppProject import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='homebase'),
+    path('home', views.home, name='homebase'),
     path('dasboard/', views.dashboard, name='dashboard'),
 
     path('login/', views.user_login, name='login'),
@@ -33,7 +33,7 @@ urlpatterns = [
 
     path('car/new', views.carNew, name='carNew'),
     path('car/', views.carList, name='carList'),
-    path('car/grid', views.carGrid, name='carGrid'),
+    path('', views.carGrid, name='carGrid'),
     path('car/update<car_id>', views.carUpdate, name='carUpdate'),
     path('car/delete<car_id>', views.carDelete, name='carDelete'),
 

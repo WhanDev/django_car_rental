@@ -1,23 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content_emp %}
-        <div class="row p-3 mt-3 justify-content-center" style="background-color: white; border-radius: 20px">
-                <form method="post" class="form form-control" enctype="multipart/form-data">
-                    <h1 class="text-center">เพิ่มพนักงาน</h1>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <label for="password">รหัสผ่าน </label>
-                    <input type="password" name="password" class="form-control" required>
-                        <p class="text-center mt-3">
-                            <button type="button" class="btn btn-secondary" onclick="history.back()">
-                                 <i class="fa fa-rotate-back"></i> Back
-                            </button>
-                            <button type="submit" class="btn btn-success">
-                                 <i class="fa-solid fa-floppy-disk"></i> Save
-                            </button>
-                        </p>
-                </form>
-            </div>
-
-        </div>
+    <div class="row p-3 mt-3 justify-content-center" style="background-color: white; border-radius: 20px">
+        <form method="post" class="form form-control" enctype="multipart/form-data">
+            <h1 class="text-center">เพิ่มพนักงาน</h1>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <label for="password">รหัสผ่าน </label>
+            <input type="password" name="password" class="form-control" required>
+            <p class="text-center mt-3">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">
+                    <i class="fa fa-rotate-back"></i> Back
+                </button>
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i> Save
+                </button>
+            </p>
+        </form>
+    </div>
 {% endblock %}
