@@ -517,6 +517,7 @@ def rentalConfirm(request, car_id):
         del request.session['ren_start']
         del request.session['ran_end']
         url = reverse('rentalList')
+        messages.add_message(request, messages.INFO, "ทำรายการเช่ารถสำเร็จ...โปรดยืนยันการชำระเงิน")
         return redirect(url)
 
     context = {'cus': cus, 'car': car, 'ren_start': day_start, 'ran_end': day_end, 'day': day, 'total': total}
@@ -552,6 +553,7 @@ def rentalPayment(request, rent_id):
             rental.status = 'ชำระเงินแล้ว'
             rental.save()
             form.save()
+            messages.add_message(request, messages.INFO, "ชำระเงินแล้ว โปรดรอระบบยืนยันการชำระเงิน...")
             return redirect('rentalList')
     else:
         form = rentalPaymentForm(rental_id=rental.id)
@@ -567,6 +569,7 @@ def rentalCancel(request, rent_id):
         rental.status = 'ยกเลิกรายการเช่า'
         Car.objects.filter(car_id=car_id).update(status='enable')
         rental.save()
+        messages.add_message(request, messages.ERROR, "ยกเลิกรายการเช่า...")
         return redirect('rentalList')
 
     context = {'rental': rental, }
@@ -584,6 +587,7 @@ def rentalPaymentConfirm(request, rent_id):
     if request.method == 'POST':
         rental.status = 'ยืนยันการชำระเงิน'
         rental.save()
+        messages.add_message(request, messages.INFO, "ยืนยันการชำระเงิน...")
         return redirect('rentalListAll')
 
     context = {'rental': rental, 'rentalPayment': rentalPayment}
@@ -602,6 +606,7 @@ def rentalService(request, rent_id):
         service.save()
         rental.status = 'ยืนยันการรับรถเช่า'
         rental.save()
+        messages.add_message(request, messages.INFO, "ยืนยันการรับรถเช่า...")
         return redirect('rentalListAll')
 
     context = {'rental': rental, 'rentalPayment': rentalPayment, 'datetime': datetime}
@@ -626,6 +631,7 @@ def rentalReture(request, rent_id):
         rental.save()
         car.status = 'enable'
         car.save()
+        messages.add_message(request, messages.INFO, "ยืนยันการคืนรถเช่า...")
         return redirect('rentalListAll')
 
     context = {'rental': rental, 'rentalPayment': rentalPayment, 'rentalService': rentalService, 'datetime': datetime}

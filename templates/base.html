@@ -23,13 +23,12 @@
         </div>
     </div>
 
-    <div class="row h-100">
+    <div class="row{% if request.session.userStatus == 'customer' %} h-100{% endif %}">
         <div class="col col-12" style="background-color: #f4f4f4;">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible"
-                     role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">&times;</span>
+                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                     {{ message }}
                 </div>
@@ -39,6 +38,7 @@
             {% endblock %}
         </div>
     </div>
+
 
     {% if request.session.userStatus == 'employee' %}
         <div class="row h-100">

@@ -3,6 +3,7 @@ from django.db.models import F, Sum, Count
 from django.db import models
 
 class CarBarnd(models.Model):
+    #ยี่ห้อ
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default="")
 
@@ -32,6 +33,7 @@ Status_CHOICES = [
 ]
 
 class Car(models.Model):
+    #รถ
     car_id = models.CharField(max_length=5, primary_key=True, default="")
     brand = models.ForeignKey(CarBarnd, on_delete=models.CASCADE, default=None)
     model = models.CharField(max_length=100, default="")
@@ -48,6 +50,7 @@ class Car(models.Model):
         return count
 
 class Customer(models.Model):
+    #ลูกค้า
     cus_id = models.CharField(max_length=13, primary_key=True, default="")
     username = models.CharField(max_length=100, default="")
     email = models.CharField(max_length=100, default="")
@@ -60,14 +63,12 @@ class Customer(models.Model):
     def __str__(self):
         return str(self.cus_id) + ":" + self.username + "|" + self.email
 
-
 ROLES = [
     ('employee', 'พนักงาน'),
     ('admin', 'แอดมิน'),
 ]
-
-
 class Employ(models.Model):
+    #พนักงาน
     em_id = models.CharField(max_length=13, primary_key=True, default="")
     email = models.CharField(max_length=100, default="")
     name = models.CharField(max_length=100, default="")
@@ -79,8 +80,8 @@ class Employ(models.Model):
     def __str__(self):
         return str(self.em_id) + ":" + self.name + "|" + self.email
 
-
 class RentalOrder(models.Model):
+    #รายการเช่า
     id = models.AutoField(primary_key=True)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE, default=None)
     cus_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=None)
@@ -90,8 +91,8 @@ class RentalOrder(models.Model):
     total = models.FloatField(default=0.00)
     #ยกเลิกรายการเช่า
 
-
 class RentalPayment(models.Model):
+    #รายการชำระ
     id = models.AutoField(primary_key=True)
     rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
     date_payment = models.DateTimeField(default=timezone.now)
@@ -99,12 +100,14 @@ class RentalPayment(models.Model):
     #ชำระเงินแล้ว
 
 class RentalService(models.Model):
+    #รายการรับรถ
     id = models.AutoField(primary_key=True)
     rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
     date_service = models.DateTimeField(default=timezone.now)
     #รับรถไปใช้งานแล้ว
 
 class RentalReture(models.Model):
+    # รายการคืนรถ
     id = models.AutoField(primary_key=True)
     rental_id = models.ForeignKey(RentalOrder, on_delete=models.CASCADE, default=None)
     date_reture = models.DateTimeField(default=timezone.now)
